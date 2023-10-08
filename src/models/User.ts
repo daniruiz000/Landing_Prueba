@@ -10,6 +10,9 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @CreateDateColumn()
+  createdAt: Date;
+
   @Column()
   nombre: string;
 
@@ -28,17 +31,6 @@ export class User {
   @Column()
   dni: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  validatePhoneNumber(rawPhoneNumber: string): void {
-    const phoneRegex = /^(34|\+34|0034)?[6789]\d{8}$/;
-    if (phoneRegex.test(rawPhoneNumber)) {
-      this.telefono = rawPhoneNumber;
-    } else {
-      throw new Error("Número de teléfono inválido");
-    }
-  }
   validateNombre(rawfirstName: string): void {
     const nameRegex = /^[A-Za-zÁ-ÿ\s]{2,19}$/;
     if (nameRegex.test(rawfirstName.trim())) {
@@ -62,6 +54,15 @@ export class User {
       this.segundo_apellido = rawlastName.toLowerCase();
     } else {
       throw new Error("El segundo apellido no cumple con los requisitos.");
+    }
+  }
+
+  validatePhoneNumber(rawPhoneNumber: string): void {
+    const phoneRegex = /^(34|\+34|0034)?[6789]\d{8}$/;
+    if (phoneRegex.test(rawPhoneNumber)) {
+      this.telefono = rawPhoneNumber;
+    } else {
+      throw new Error("Número de teléfono inválido");
     }
   }
 

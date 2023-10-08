@@ -3,7 +3,7 @@ import { type Response, type NextFunction } from "express";
 
 export const isAuth = async (req: any, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const token = req.headers.authorization?.replace("Bearer ", "");
+    const token = req.headers.authorization.replace("Bearer ", "");
 
     if (!token) {
       throw new Error("No se encontró el token de autorización");
