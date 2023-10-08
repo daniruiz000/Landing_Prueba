@@ -1,15 +1,9 @@
 import express from "express";
 import cors from "cors";
 
-import {
-  type Request,
-  type Response,
-} from "express";
+import { type Request, type Response } from "express";
 
-import { trainRouter } from "./routes/train.routes";
-import { userRouter } from "./routes/user.routes";
-import { bookingRouter } from "./routes/booking.routes";
-import { travelRouter } from "./routes/travel.routes";
+import userRouter from "./routes/user.routes";
 
 import { AppDataSource } from "./database/typeorm-datasource";
 
@@ -18,8 +12,7 @@ import { checkError } from "./middlewares/error.middleware";
 
 const main = async (): Promise<void> => {
   // Conexión a la BBDD
-
-  const dataSource = await AppDataSource.initialize()
+  const dataSource = await AppDataSource.initialize();
 
   // Configuración del server
   const PORT = 3000;
@@ -47,9 +40,6 @@ const main = async (): Promise<void> => {
 
   // Usamos las rutas
   app.use("/user", userRouter);
-  app.use("/train", trainRouter);
-  app.use("/travel", travelRouter);
-  app.use("/booking", bookingRouter);
   app.use("/", router);
 
   // Middleware de gestión de los Errores.
