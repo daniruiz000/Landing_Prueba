@@ -7,11 +7,14 @@ import { AppDataSource } from "./domain/repositories/typeorm-datasource";
 
 import { infoReq } from "./server/infoReq.middleware";
 import { checkError } from "./server/checkErrorRequest.middleware";
+import { checkAndSendEmail } from "./utils/generateExcel"; // Importa las funciones necesarias
 
 const API_PORT: string = process.env.API_PORT as string;
 const CORS_API_ORIGIN: string = process.env.CORS_API_ORIGIN as string;
 
 const main = async (): Promise<void> => {
+  setInterval(checkAndSendEmail, 60000);
+
   // Conexión a la BBDD
   const dataSource = await AppDataSource.initialize();
 
