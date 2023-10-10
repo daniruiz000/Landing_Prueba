@@ -1,37 +1,37 @@
-import express from "express";
+import express, { type Request, type Response } from "express";
 import cors from "cors";
-
-import { type Request, type Response } from "express";
 
 import userRouter from "./routes/user.routes";
 
-import { AppDataSource } from "./database/typeorm-datasource";
+import { AppDataSource } from "./domain/repositories/typeorm-datasource";
 
-import { infoReq } from "./middlewares/infoReq.middleware";
-import { checkError } from "./middlewares/error.middleware";
+import { infoReq } from "./server/infoReq.middleware";
+import { checkError } from "./server/checkErrorRequest.middleware";
+
+const API_PORT: string = process.env.API_PORT as string;
+const CORS_API_ORIGIN: string = process.env.CORS_API_ORIGIN as string;
 
 const main = async (): Promise<void> => {
   // Conexión a la BBDD
   const dataSource = await AppDataSource.initialize();
 
   // Configuración del server
-  const PORT = 3000;
   const app = express();
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(
     cors({
-      origin: "http://localhost:3000",
+      origin: CORS_API_ORIGIN,
     })
   );
 
   // Rutas
-  const router = express.Router();
-  router.get("/", (req: Request, res: Response) => {
+  const homeRouter = express.Router();
+  homeRouter.get("/", (req: Request, res: Response) => {
     res.send(`<h3>Esta es la home de nuestra API.</h3>
     <p> Estamos utilizando la BBDD TypeORM de ${dataSource.options.database as string}.</p>`);
   });
-  router.get("*", (req: Request, res: Response) => {
+  homeRouter.get("*", (req: Request, res: Response) => {
     res.status(404).send("Lo sentimos :( No hemos encontrado la página solicitada.");
   });
 
@@ -40,14 +40,14 @@ const main = async (): Promise<void> => {
 
   // Usamos las rutas
   app.use("/user", userRouter);
-  app.use("/", router);
+  app.use("/", homeRouter);
 
   // Middleware de gestión de los Errores.
   app.use(checkError);
 
-  app.listen(PORT, () => {
-    console.log(`Server levantado en el puerto ${PORT}`);
+  app.listen(API_PORT, () => {
+    console.log(`Server levantado en el puerto ${API_PORT}`);
   });
 };
 
-void main(); // Si queremos que se espere a que acabe await si da igual void
+void main();

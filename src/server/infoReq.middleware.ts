@@ -1,8 +1,4 @@
-import {
-  type Request,
-  type Response,
-  type NextFunction,
-} from "express";
+import { type Request, type Response, type NextFunction } from "express";
 
 export const infoReq = (req: Request, res: Response, next: NextFunction): void => {
   const date = new Date();
