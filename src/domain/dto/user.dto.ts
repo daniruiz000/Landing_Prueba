@@ -31,32 +31,32 @@ const getAllUser = async (): Promise<User[]> => {
 const updateUser = async (userData: any, idReceivedInParams: number): Promise<User> => {
   const userToUpdate = await userDto.getUserById(idReceivedInParams);
 
-  if (userToUpdate) {
-    Object.assign(userToUpdate, userData);
-    if (userData.nombre !== undefined) {
-      userToUpdate.nombre = userData.nombre;
-    }
-
-    if (userData.apellido !== undefined) {
-      userToUpdate.apellido = userData.apellido;
-    }
-
-    if (userData.segundo_apellido !== undefined) {
-      userToUpdate.segundo_apellido = userData.segundo_apellido;
-    }
-
-    if (userData.email !== undefined) {
-      userToUpdate.email = userData.email;
-    }
-
-    if (userData.dni !== undefined) {
-      userToUpdate.dni = userData.dni;
-    }
-
-    if (userData.telefono !== undefined) {
-      userToUpdate.telefono = userData.telefono;
-    }
+  if (!userToUpdate) {
+    throw new CustomError("Usuario no encontrado", 404);
   }
+
+  // Definir manualmente las propiedades válidas del modelo de usuario
+  const validUserProperties: string[] = [
+    "id",
+    "createdAt",
+    "nombre",
+    "apellido",
+    "segundo_apellido",
+    "telefono",
+    "email",
+    "dni",
+    // Agregar otras propiedades válidas aquí si es necesario
+  ];
+
+  // Verificar si hay alguna propiedad en los datos del usuario que no sea válida
+  const invalidProperties = Object.keys(userData).filter((property) => !validUserProperties.includes(property));
+
+  if (invalidProperties.length > 0) {
+    throw new CustomError(`Propiedades no válidas: ${invalidProperties.join(", ")}`, 400);
+  }
+
+  // Actualizar las propiedades válidas del usuario
+  Object.assign(userToUpdate, userData);
 
   const userUpdated = await userOdm.saveUser(userToUpdate);
   return userUpdated;
