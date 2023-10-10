@@ -10,9 +10,13 @@ import moment from "moment";
 
 const authEmail: string = process.env.AUTH_EMAIL as string;
 const authPassword: string = process.env.AUTH_PASSWORD as string;
-const maxUsersLimit = parseInt(process.env.MAX_USERS_LIMIT as string) || undefined;
-const finishDate = process.env.FINISH_DATE as string;
+const maxUsersLimit = parseInt(process.env.PROMOTION_MAX_USERS_LIMIT as string) || undefined;
+const finishDate = process.env.PROMOTION_FINISH_DATE as string;
 const finishDateParsed = moment(finishDate, "DD:MM:YY - HH:mm:ss").toDate() || undefined;
+const startDate = process.env.PROMOTION_START_DATE as string;
+const startDateParsed = moment(startDate, "DD:MM:YY - HH:mm:ss").toDate() || undefined;
+
+const actualDate = new Date();
 
 const userRouter = Router();
 
@@ -33,11 +37,16 @@ userRouter.get("/generate-excel-and-send-mail", isAuth, async (req: any, res: Re
 
 userRouter.post("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const actualDate = new Date();
+    // Verificar si START_DATE está definido y si la fecha actual es anterior a la fecha de inicio
+    if (startDateParsed && actualDate < startDateParsed) {
+      const formattedStartDate = moment(startDateParsed).format("DD/MM/YYYY - HH:mm:ss");
+      throw new CustomError(`Todavía no se pueden añadir usuarios hasta ${formattedStartDate}.`, 400);
+    }
 
     // Verificar si FINISH_DATE está definido y si la fecha actual es posterior a la fecha de finalización
     if (finishDateParsed && actualDate >= finishDateParsed) {
-      throw new CustomError("Se ha alcanzado la fecha de finalización, no se pueden añadir más usuarios", 400);
+      const formattedFinishDate = moment(finishDateParsed).format("DD/MM/YYYY - HH:mm:ss");
+      throw new CustomError(`Se ha alcanzado la fecha de finalización ${formattedFinishDate}, no se pueden añadir más usuarios`, 400);
     }
 
     // Verificar si MAX_USERS_LIMIT está definido y se ha alcanzado el límite máximo de usuarios
@@ -61,7 +70,7 @@ userRouter.get("/", isAuth, async (req: any, res: Response, next: NextFunction) 
   try {
     if (req.email === authEmail && req.password === authPassword) {
       const users = await userService.getAllUser(next);
-      res.json(users);
+      res.status(200).json(users);
     } else {
       throw new CustomError("No tienes autorización para realizar esta operación", 403);
     }
@@ -75,7 +84,7 @@ userRouter.post("/login", async (req: Request, res: Response, next: NextFunction
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ error: "Se deben especificar los campos email y password" });
+      throw new CustomError("Se deben especificar los campos email y password", 400);
     }
 
     const match = email === authEmail && password === authPassword;
@@ -98,7 +107,7 @@ userRouter.get("/:id", isAuth, async (req: any, res: Response, next: NextFunctio
       const idReceivedInParams = parseInt(req.params.id);
       const user = await userService.getUserById(idReceivedInParams, next);
       if (user) {
-        return res.json(user);
+        return res.status(200).json(user);
       }
     } else {
       throw new CustomError("Email y/o contraseña incorrectos", 403);
