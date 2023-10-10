@@ -10,11 +10,14 @@ import moment from "moment";
 
 const authEmail: string = process.env.AUTH_EMAIL as string;
 const authPassword: string = process.env.AUTH_PASSWORD as string;
+
 const maxUsersLimit = parseInt(process.env.PROMOTION_MAX_USERS_LIMIT as string) || undefined;
+
+const formatedDate = process.env.FORMAT_DATE_MOMENT as string;
 const finishDate = process.env.PROMOTION_FINISH_DATE as string;
-const finishDateParsed = moment(finishDate, "DD/MM/YY - HH:mm:ss").toDate() || undefined;
+const finishDateParsed = moment(finishDate, formatedDate).toDate() || undefined;
 const startDate = process.env.PROMOTION_START_DATE as string;
-const startDateParsed = moment(startDate, "DD/MM/YY - HH:mm:ss").toDate() || undefined;
+const startDateParsed = moment(startDate, formatedDate).toDate() || undefined;
 
 const actualDate = new Date();
 

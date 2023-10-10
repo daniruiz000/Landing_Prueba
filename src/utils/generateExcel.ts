@@ -5,15 +5,16 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { userDto } from "../domain/dto/user.dto";
 
+const formatedDate = process.env.FORMAT_DATE_MOMENT as string;
 const actualDate = moment();
-const actualDateParsed = moment(actualDate, "DD/MM/YY - HH:mm:ss").toDate() || undefined;
-
+const actualDateParsed = moment(actualDate, formatedDate).toDate() || undefined;
 const finishDate = process.env.PROMOTION_FINISH_DATE as string;
-const finishDateParsed = moment(finishDate, "DD/MM/YY - HH:mm:ss").toDate() || undefined;
+const finishDateParsed = moment(finishDate, formatedDate).toDate() || undefined;
 
 const emailSender = process.env.EMAIL_SENDER as string;
 const emailSenderPassword = process.env.EMAIL_SENDER_PASSWORD as string;
 const emailReciver = process.env.EMAIL_RECIVER as string;
+
 const database = process.env.SQL_DATABASE as string;
 const promocion = process.env.PROMOCION_NAME as string;
 const maxUsersLimit = parseInt(process.env.PROMOTION_MAX_USERS_LIMIT as string) || undefined;
@@ -45,7 +46,7 @@ export const generateExcel = async (): Promise<any> => {
     segundo_apellido: user.segundo_apellido.toLocaleLowerCase(),
     email: user.email.toLocaleLowerCase(),
     dni: user.dni.toLocaleUpperCase(),
-    createdAt: format(user.createdAt, "dd/MM/yy - HH:mm:ss", { locale: es }),
+    createdAt: format(user.createdAt, formatedDate, { locale: es }),
   }));
 
   worksheet.addRows(formattedUsers);
