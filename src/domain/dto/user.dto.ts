@@ -1,5 +1,5 @@
 import { CustomError } from "../../server/checkErrorRequest.middleware";
-import { type User } from "../entities/User";
+import { validUserPropertiesUser, type User } from "../entities/User";
 import { userOdm } from "../odm/user.odm";
 
 const createUser = async (user: any): Promise<User> => {
@@ -35,24 +35,11 @@ const updateUser = async (userData: any, idReceivedInParams: number): Promise<Us
     throw new CustomError("Usuario no encontrado", 404);
   }
 
-  // Definir manualmente las propiedades válidas del modelo de usuario
-  const validUserProperties: string[] = [
-    "id",
-    "createdAt",
-    "nombre",
-    "apellido",
-    "segundo_apellido",
-    "telefono",
-    "email",
-    "dni",
-    // Agregar otras propiedades válidas aquí si es necesario
-  ];
-
   // Verificar si hay alguna propiedad en los datos del usuario que no sea válida
-  const invalidProperties = Object.keys(userData).filter((property) => !validUserProperties.includes(property));
+  const invalidProperties = Object.keys(userData).filter((property) => !validUserPropertiesUser.includes(property));
 
   if (invalidProperties.length > 0) {
-    throw new CustomError(`Propiedades no válidas: ${invalidProperties.join(", ")}`, 400);
+    throw new CustomError(`Actualización de usuario cancelada. Propiedades no válidas: ${invalidProperties.join(", ")}`, 400);
   }
 
   // Actualizar las propiedades válidas del usuario

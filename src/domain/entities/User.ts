@@ -72,3 +72,16 @@ export class User {
     return false;
   }
 }
+
+// Definir manualmente las propiedades válidas del modelo de usuario
+export const validUserPropertiesUser: string[] = [
+  "id",
+  "createdAt",
+  "nombre",
+  "apellido",
+  "segundo_apellido",
+  "telefono",
+  "email",
+  "dni",
+  // Agregar otras propiedades válidas aquí si es necesario
+];
