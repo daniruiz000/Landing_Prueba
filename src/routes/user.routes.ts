@@ -1,13 +1,18 @@
 import { Router, type Request, type Response, type NextFunction } from "express";
 import { isAuth } from "../server/auth.middleware";
-import { userService } from "../domain/services/user.service"; // Cambiamos a userService
+import { userService } from "../domain/services/user.service";
 import { generateToken } from "../utils/token";
 import { excelService } from "../domain/services/excel.service";
 import { mailService } from "../domain/services/mail.service";
 import { CustomError } from "../server/checkErrorRequest.middleware";
+import { userDto } from "../domain/dto/user.dto";
+import moment from "moment";
 
 const authEmail: string = process.env.AUTH_EMAIL as string;
 const authPassword: string = process.env.AUTH_PASSWORD as string;
+const maxUsersLimit = parseInt(process.env.MAX_USERS_LIMIT as string) || undefined;
+const finishDate = process.env.FINISH_DATE as string;
+const finishDateParsed = moment(finishDate, "DD:MM:YY - HH:mm:ss").toDate() || undefined;
 
 const userRouter = Router();
 
@@ -28,6 +33,21 @@ userRouter.get("/generate-excel-and-send-mail", isAuth, async (req: any, res: Re
 
 userRouter.post("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const actualDate = new Date();
+
+    // Verificar si FINISH_DATE está definido y si la fecha actual es posterior a la fecha de finalización
+    if (finishDateParsed && actualDate >= finishDateParsed) {
+      throw new CustomError("Se ha alcanzado la fecha de finalización, no se pueden añadir más usuarios", 400);
+    }
+
+    // Verificar si MAX_USERS_LIMIT está definido y se ha alcanzado el límite máximo de usuarios
+    if (maxUsersLimit) {
+      const numberOfUsers = await userDto.countUsers();
+      if (numberOfUsers >= maxUsersLimit) {
+        throw new CustomError("Se ha alcanzado el límite máximo de usuarios permitidos", 400);
+      }
+    }
+
     const newUser = await userService.createUser(req, next);
     if (newUser) {
       return res.status(201).send("Usuario añadido correctamente.");

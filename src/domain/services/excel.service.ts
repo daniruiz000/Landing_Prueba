@@ -22,6 +22,11 @@ const generateExcel = async (): Promise<ExcelJS.Workbook> => {
 
   const formattedUsers = users.map((user) => ({
     ...user,
+    nombre: user.nombre.toLocaleLowerCase(),
+    apellido: user.apellido.toLocaleLowerCase(),
+    segundo_apellido: user.segundo_apellido.toLocaleLowerCase(),
+    email: user.email.toLocaleLowerCase(),
+    dni: user.dni.toLocaleUpperCase(),
     createdAt: format(user.createdAt, "dd-MM-yy HH:mm:ss", { locale: es }),
   }));
 

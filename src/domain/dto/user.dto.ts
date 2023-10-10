@@ -2,6 +2,15 @@ import { CustomError } from "../../server/checkErrorRequest.middleware";
 import { validUserPropertiesUser, type User } from "../entities/User";
 import { userOdm } from "../odm/user.odm";
 
+const countUsers = async (): Promise<number> => {
+  const userCount = await userOdm.countUsers();
+  if (!userCount) {
+    throw new CustomError("Fallo en el recuento de usuarios", 400);
+  }
+
+  return userCount;
+};
+
 const createUser = async (user: any): Promise<User> => {
   const newUser = await userOdm.saveUser(user);
   if (!newUser) {
@@ -60,6 +69,7 @@ const deleteUserById = async (id: number): Promise<User> => {
 };
 
 export const userDto = {
+  countUsers,
   createUser,
   getUserById,
   getAllUser,
