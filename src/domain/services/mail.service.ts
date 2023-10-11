@@ -1,5 +1,8 @@
 import moment from "moment";
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const emailSender = process.env.EMAIL_SENDER as string;
 const emailSenderPassword = process.env.EMAIL_SENDER_PASSWORD as string;

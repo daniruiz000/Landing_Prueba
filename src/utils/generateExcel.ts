@@ -1,9 +1,13 @@
 import moment from "moment";
 import ExcelJS from "exceljs";
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { userDto } from "../domain/dto/user.dto";
+
+dotenv.config();
 
 const formatedDate = process.env.FORMAT_DATE_MOMENT as string;
 const actualDate = moment();

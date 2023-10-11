@@ -10,6 +10,9 @@ import { mailService } from "../domain/services/mail.service";
 import { CustomError } from "../server/checkErrorRequest.middleware";
 import { userDto } from "../domain/dto/user.dto";
 import moment from "moment";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const authEmail: string = process.env.AUTH_EMAIL as string;
 const authPassword: string = process.env.AUTH_PASSWORD as string;

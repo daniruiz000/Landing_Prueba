@@ -1,11 +1,12 @@
 import express from "express";
 import cors from "cors";
-
 import dotenv from "dotenv";
 
-import { checkAndSendEmail } from "./utils/generateExcel"; // Importa las funciones necesarias
+import { checkAndSendEmail } from "./utils/generateExcel";
+
 import userRouter from "./routes/user.routes";
 import homeRouter from "./routes/home.routes";
+
 import { AppDataSource } from "./domain/repositories/typeorm-datasource";
 import { checkError } from "./server/checkErrorRequest.middleware";
 

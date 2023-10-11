@@ -1,6 +1,8 @@
-// home.routes.ts
 import { Router, type Request, type Response, type NextFunction } from "express";
 import path from "path";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const database = process.env.SQL_DATABASE as string;
 const homeRouter = Router();
