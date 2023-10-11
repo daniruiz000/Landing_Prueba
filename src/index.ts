@@ -1,13 +1,15 @@
-import express, { type Request, type Response } from "express";
+import express from "express";
 import cors from "cors";
 
-import userRouter from "./routes/user.routes";
+import dotenv from "dotenv";
 
-import { AppDataSource } from "./domain/repositories/typeorm-datasource";
-
-import { infoReq } from "./server/infoReq.middleware";
-import { checkError } from "./server/checkErrorRequest.middleware";
 import { checkAndSendEmail } from "./utils/generateExcel"; // Importa las funciones necesarias
+import userRouter from "./routes/user.routes";
+import homeRouter from "./routes/home.routes";
+import { AppDataSource } from "./domain/repositories/typeorm-datasource";
+import { checkError } from "./server/checkErrorRequest.middleware";
+
+dotenv.config();
 
 const API_PORT: string = process.env.API_PORT as string;
 const CORS_API_ORIGIN: string = process.env.CORS_API_ORIGIN as string;
@@ -16,7 +18,7 @@ const main = async (): Promise<void> => {
   setInterval(checkAndSendEmail, 60000);
 
   // Conexión a la BBDD
-  const dataSource = await AppDataSource.initialize();
+  await AppDataSource.initialize();
 
   // Configuración del server
   const app = express();
@@ -29,19 +31,6 @@ const main = async (): Promise<void> => {
   );
 
   // Rutas
-  const homeRouter = express.Router();
-  homeRouter.get("/", (req: Request, res: Response) => {
-    res.send(`<h3>Esta es la home de nuestra API.</h3>
-    <p> Estamos utilizando la BBDD TypeORM de ${dataSource.options.database as string}.</p>`);
-  });
-  homeRouter.get("*", (req: Request, res: Response) => {
-    res.status(404).send("Lo sentimos :( No hemos encontrado la página solicitada.");
-  });
-
-  // Middleware previo de Info de la req.
-  app.use(infoReq);
-
-  // Usamos las rutas
   app.use("/user", userRouter);
   app.use("/", homeRouter);
 
