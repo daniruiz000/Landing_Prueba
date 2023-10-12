@@ -50,21 +50,11 @@ export const verifyValidProperties = (userData: any): void => {
 };
 
 export const verifyValidCredentials = (req: any): void => {
-  if (req.body.email !== authEmail || req.body.password !== authPassword) {
+  if (req.email !== authEmail || req.password !== authPassword) {
     throw new CustomError("No estás autorizado a realizar esta acción.", 403);
   }
 
-  if (!req.body.email || !req.body.email) {
-    throw new CustomError("Se deben especificar los campos email y password", 400);
-  }
-};
-
-export const verifyValidCredentialsToDo = (req: any): void => {
-  if (req.email !== authEmail && req.password !== authPassword) {
-    throw new CustomError("No estás autorizado a realizar esta acción.", 403);
-  }
-
-  if (!req.email || !req.email) {
+  if (!req.email || !req.password) {
     throw new CustomError("Se deben especificar los campos email y password", 400);
   }
 };

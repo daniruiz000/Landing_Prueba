@@ -1,5 +1,4 @@
 import { type Repository } from "typeorm";
-
 import { User } from "../entities/User";
 import { AppDataSource } from "../repositories/typeorm-datasource";
 import { CustomError } from "../../server/checkErrorRequest.middleware";
