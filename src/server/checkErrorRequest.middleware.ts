@@ -8,7 +8,6 @@ export class CustomError extends Error {
   }
 }
 
-// Función auxiliar para manejar errores de duplicación en MySQL
 const handleDuplicateError = (err: any, res: Response): boolean => {
   if ("sqlMessage" in err) {
     res.status(409).json({ error: "Usuario ya registrado con alguno de estos datos." });
@@ -17,7 +16,6 @@ const handleDuplicateError = (err: any, res: Response): boolean => {
   return false;
 };
 
-// Middleware de manejo de errores personalizado
 export const checkError = (err: any, req: Request, res: Response, next: NextFunction): void => {
   console.error("Error:", err.message);
 

@@ -2,6 +2,8 @@ import moment from "moment";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 
+import { CustomError } from "../../server/checkErrorRequest.middleware";
+
 dotenv.config();
 
 const emailSender = process.env.EMAIL_SENDER as string;
@@ -40,13 +42,12 @@ const sendExcelByEmail = async (workbook: { xlsx: { writeBuffer: () => any } }):
 
   transporter.sendMail(mailOptions, (error: any, info: { response: any }) => {
     if (error) {
-      console.error("Error al enviar el correo electrónico:", error);
-    } else {
-      console.log(`Correo electrónico enviado a: ${emailReciver} con fecha: ${actualDateParsed.toString()}`);
+      throw new CustomError(`Error al enviar el correo ${error.error}`, 400);
     }
+    console.log(`Correo electrónico enviado a: ${emailReciver} con fecha: ${actualDateParsed.toString()}`);
   });
 };
 
-export const mailService = {
+export const mailDto = {
   sendExcelByEmail,
 };

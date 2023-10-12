@@ -1,11 +1,17 @@
 import ExcelJS from "exceljs";
+import dotenv from "dotenv";
+
+import { userDto } from "./user.dto";
 import { format } from "date-fns";
-import es from "date-fns/locale/es";
-import { userDto } from "../dto/user.dto";
+import { es } from "date-fns/locale";
+import { CustomError } from "../../server/checkErrorRequest.middleware";
 
-const generateExcel = async (): Promise<ExcelJS.Workbook> => {
+dotenv.config();
+
+const formatedDate = process.env.FORMAT_DATE_MOMENT as string;
+
+const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
   const users = await userDto.getAllUser();
-
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet("Usuarios");
 
@@ -27,14 +33,17 @@ const generateExcel = async (): Promise<ExcelJS.Workbook> => {
     segundo_apellido: user.segundo_apellido.toLocaleLowerCase(),
     email: user.email.toLocaleLowerCase(),
     dni: user.dni.toLocaleUpperCase(),
-    createdAt: format(user.createdAt, "dd-MM-yy HH:mm:ss", { locale: es }),
+    createdAt: format(user.createdAt, formatedDate, { locale: es }),
   }));
 
   worksheet.addRows(formattedUsers);
+  if (!workbook) {
+    throw new CustomError("Fallo al crear el archivo excel", 500);
+  }
 
   return workbook;
 };
 
-export const excelService = {
-  generateExcel,
+export const excelDto = {
+  createExcelWithUsers,
 };
