@@ -52,9 +52,13 @@ const getUserById = async (id: number): Promise<User | null> => {
   return user;
 };
 
-const saveUser = async (userData: any): Promise<User> => {
+const saveUser = async (userData: any, foto: Buffer, factura: Buffer): Promise<User> => {
   await validateInsertData(userData);
-  const userSaved = await userRepository.save(userData);
+  const userNew = new User();
+  Object.assign(userNew, userData);
+  userNew.foto = foto;
+  userNew.factura = factura;
+  const userSaved = await userRepository.save(userNew);
 
   return userSaved;
 };

@@ -25,6 +25,8 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
       { header: "Email", key: "email", width: 20 },
       { header: "DNI", key: "dni", width: 20 },
       { header: "Fecha de Inscripción", key: "createdAt", width: 20 },
+      { header: "Foto", key: "foto" },
+      { header: "Factura", key: "factura" },
     ];
 
     worksheet.eachRow((row) => {

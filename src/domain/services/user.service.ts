@@ -1,16 +1,18 @@
-import { type Request, type Response, type NextFunction } from "express";
+import { type Response, type NextFunction } from "express";
 import { userDto } from "../dto/user.dto";
 import { verifyIsPromotionActive, verifyLimitOfUsers, verifyValidCredentials, verifyValidProperties } from "../../utils/verifyInsertData";
 
-const createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const createUser = async (req: any, res: Response, next: NextFunction): Promise<void> => {
   try {
     const userDataInsert = req.body;
+    const foto = req.files.foto ? req.files.foto[0].buffer : null;
+    const factura = req.files.factura ? req.files.factura[0].buffer : null;
 
     verifyIsPromotionActive();
     await verifyLimitOfUsers();
     verifyValidProperties(userDataInsert);
 
-    await userDto.createUser(userDataInsert);
+    await userDto.createUser(userDataInsert, foto, factura);
 
     console.log("Usuario creado correctamente.");
     res.status(201).send("Usuario creado correctamente.");
@@ -68,9 +70,11 @@ const updateUserById = async (req: any, res: Response, next: NextFunction): Prom
     const userDataInsert = req.body;
     const credentials = req;
     const idReceivedInParams = parseInt(req.params.id);
+    const foto = req.files.foto ? req.files.foto[0].buffer : null;
+    const factura = req.files.factura ? req.files.factura[0].buffer : null;
 
     verifyValidCredentials(credentials);
-    const updateUser = await userDto.updateUser(userDataInsert, idReceivedInParams);
+    const updateUser = await userDto.updateUser(userDataInsert, idReceivedInParams, foto, factura);
 
     console.log("Usuario actualizado correctamente.");
     res.status(200).json(updateUser);

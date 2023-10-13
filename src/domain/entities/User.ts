@@ -27,6 +27,12 @@ export class User {
   @Column({ unique: true })
   dni: string;
 
+  @Column({ type: "longblob", nullable: true }) // Usar "lonblob" para campos BLOB en PostgreSQL
+  foto: Buffer;
+
+  @Column({ type: "longblob", nullable: true }) // Usar "bytea" para campos BLOB en PostgreSQL
+  factura: Buffer;
+
   validateNombre(): boolean {
     const rawFirstName = this.nombre;
     const nameRegex = /^[A-Za-zÁ-ÿ\s]{2,19}$/;
