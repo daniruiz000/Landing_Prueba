@@ -12,7 +12,6 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
     const worksheet = workbook.addWorksheet("Usuarios");
 
     worksheet.columns = [
-      { header: "ID", key: "id", width: 10 },
       { header: "Nombre", key: "nombre", width: 20 },
       { header: "Apellido", key: "apellido", width: 20 },
       { header: "Segundo Apellido", key: "segundo_apellido", width: 20 },
@@ -20,8 +19,8 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
       { header: "Email", key: "email", width: 20 },
       { header: "DNI", key: "dni", width: 20 },
       { header: "Fecha de Inscripción", key: "createdAt", width: 20 },
-      { header: "Foto", key: "foto", width: 20 },
-      { header: "Factura", key: "factura", width: 20 },
+      { header: "Foto", key: "foto", width: 13.5 },
+      { header: "Factura", key: "factura", width: 13.5 },
     ];
 
     worksheet.getRow(1).eachCell((cell) => {
@@ -53,14 +52,13 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
 
       // Agregar una fila para los datos del usuario
       worksheet.addRow({
-        id: user.id,
-        nombre: user.nombre,
-        apellido: user.apellido,
-        segundo_apellido: user.segundo_apellido,
-        telefono: user.telefono,
-        email: user.email,
-        dni: user.dni,
-        createdAt: user.createdAt,
+        nombre: user.nombre.toUpperCase(),
+        apellido: user.apellido.toUpperCase(),
+        segundo_apellido: user.segundo_apellido.toUpperCase(),
+        telefono: user.telefono.toUpperCase(),
+        email: user.email.toUpperCase(),
+        dni: user.dni.toUpperCase(),
+        createdAt: `${user.createdAt.getDate()}/${user.createdAt.getMonth()}/${user.createdAt.getFullYear()} - ${user.createdAt.getHours()}:${user.createdAt.getHours()}:${user.createdAt.getSeconds()}`,
       });
 
       // Agregar la imagen de "foto" si existe
@@ -71,7 +69,7 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
         });
 
         worksheet.addImage(imgId, {
-          tl: { col: 8, row: currentRow - 1 },
+          tl: { col: 7, row: currentRow - 1 },
           ext: { width: 100, height: 100 }, // Ajustar el tamaño según sea necesario
         });
       }
@@ -84,10 +82,14 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
         });
 
         worksheet.addImage(imgId, {
-          tl: { col: 9, row: currentRow - 1 },
+          tl: { col: 8, row: currentRow - 1 },
           ext: { width: 100, height: 100 }, // Ajustar el tamaño según sea necesario
         });
       }
+    });
+
+    worksheet.eachRow((row) => {
+      row.alignment = { vertical: "middle", horizontal: "center" };
     });
 
     return workbook;
