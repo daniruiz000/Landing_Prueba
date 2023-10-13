@@ -52,7 +52,7 @@ const getUserById = async (id: number): Promise<User | null> => {
   return user;
 };
 
-const saveUser = async (userData: any, foto: Buffer, factura: Buffer): Promise<User> => {
+const saveUser = async (userData: any, foto: string, factura: string): Promise<User> => {
   await validateInsertData(userData);
   const userNew = new User();
   Object.assign(userNew, userData);

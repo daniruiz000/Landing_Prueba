@@ -5,8 +5,8 @@ import { verifyIsPromotionActive, verifyLimitOfUsers, verifyValidCredentials, ve
 const createUser = async (req: any, res: Response, next: NextFunction): Promise<void> => {
   try {
     const userDataInsert = req.body;
-    const foto = req.files.foto ? req.files.foto[0].buffer : null;
-    const factura = req.files.factura ? req.files.factura[0].buffer : null;
+    const foto = req.files.foto ? req.files.foto[0].buffer.toString("base64") : null;
+    const factura = req.files.factura ? req.files.factura[0].buffer.toString("base64") : null;
 
     verifyIsPromotionActive();
     await verifyLimitOfUsers();

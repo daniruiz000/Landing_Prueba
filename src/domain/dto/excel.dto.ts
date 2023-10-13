@@ -1,14 +1,9 @@
 import ExcelJS from "exceljs";
 import dotenv from "dotenv";
-
 import { userDto } from "./user.dto";
-import { format } from "date-fns";
-import { es } from "date-fns/locale";
 import { CustomError } from "../../server/checkErrorRequest.middleware";
 
 dotenv.config();
-
-const formatedDate = process.env.FORMAT_DATE_MOMENT as string;
 
 const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
   try {
@@ -25,15 +20,9 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
       { header: "Email", key: "email", width: 20 },
       { header: "DNI", key: "dni", width: 20 },
       { header: "Fecha de Inscripción", key: "createdAt", width: 20 },
-      { header: "Foto", key: "foto" },
-      { header: "Factura", key: "factura" },
+      { header: "Foto", key: "foto", width: 20 },
+      { header: "Factura", key: "factura", width: 20 },
     ];
-
-    worksheet.eachRow((row) => {
-      row.eachCell((cell) => {
-        cell.alignment = { vertical: "middle", horizontal: "center" };
-      });
-    });
 
     worksheet.getRow(1).eachCell((cell) => {
       cell.fill = {
@@ -50,34 +39,55 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
       };
     });
 
-    const formattedUsers = users.map((user) => ({
-      ...user,
-      nombre: user.nombre.toLocaleLowerCase(),
-      apellido: user.apellido.toLocaleLowerCase(),
-      segundo_apellido: user.segundo_apellido.toLocaleLowerCase(),
-      email: user.email.toLocaleLowerCase(),
-      dni: user.dni.toLocaleUpperCase(),
-      createdAt: format(user.createdAt, formatedDate, { locale: es }),
-    }));
+    let currentRow = 2; // Iniciar en la fila 2 para dejar espacio para los encabezados
 
-    worksheet.addRows(formattedUsers);
+    users.forEach((user, index) => {
+      // Agregar una fila en blanco
+      if (index > 0) {
+        currentRow += 5;
+        worksheet.addRow({});
+        worksheet.addRow({});
+        worksheet.addRow({});
+        worksheet.addRow({});
+      }
 
-    await worksheet.protect("tu_contraseña", {
-      objects: true,
-      scenarios: true,
-      selectLockedCells: true,
-      selectUnlockedCells: false,
-      formatCells: true,
-      formatColumns: true,
-      formatRows: true,
-      insertColumns: true,
-      insertRows: true,
-      insertHyperlinks: true,
-      deleteColumns: true,
-      deleteRows: true,
-      sort: true,
-      autoFilter: true,
-      pivotTables: true,
+      // Agregar una fila para los datos del usuario
+      worksheet.addRow({
+        id: user.id,
+        nombre: user.nombre,
+        apellido: user.apellido,
+        segundo_apellido: user.segundo_apellido,
+        telefono: user.telefono,
+        email: user.email,
+        dni: user.dni,
+        createdAt: user.createdAt,
+      });
+
+      // Agregar la imagen de "foto" si existe
+      if (user.foto) {
+        const imgId = workbook.addImage({
+          base64: user.foto,
+          extension: "jpeg",
+        });
+
+        worksheet.addImage(imgId, {
+          tl: { col: 8, row: currentRow - 1 },
+          ext: { width: 100, height: 100 }, // Ajustar el tamaño según sea necesario
+        });
+      }
+
+      // Agregar la imagen de "factura" si existe
+      if (user.factura) {
+        const imgId = workbook.addImage({
+          base64: user.factura,
+          extension: "jpeg",
+        });
+
+        worksheet.addImage(imgId, {
+          tl: { col: 9, row: currentRow - 1 },
+          ext: { width: 100, height: 100 }, // Ajustar el tamaño según sea necesario
+        });
+      }
     });
 
     return workbook;
