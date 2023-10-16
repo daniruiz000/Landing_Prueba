@@ -66,7 +66,7 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
         });
 
         worksheet.addImage(imgId, {
-          tl: { col: 7, row: currentRow - 1 },
+          tl: { col: 6, row: currentRow - 1 },
           ext: { width: 100, height: 100 }, // Ajustar el tamaño según sea necesario
         });
       }
