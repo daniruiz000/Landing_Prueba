@@ -18,20 +18,14 @@ export class User {
   @Column()
   segundo_apellido: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   telefono: string;
 
   @Column({ unique: true })
   email: string;
 
-  @Column({ unique: true })
-  dni: string;
-
   @Column({ type: "longtext", nullable: true }) // Usar "lonblob" para campos BLOB en PostgreSQL
   foto: string;
-
-  @Column({ type: "longtext", nullable: true }) // Usar "bytea" para campos BLOB en PostgreSQL
-  factura: string;
 
   validateNombre(): boolean {
     const rawFirstName = this.nombre;
@@ -62,21 +56,6 @@ export class User {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(rawEmail);
   }
-
-  validateDni(): boolean {
-    const rawDni = this.dni;
-    const dniRegex = /^[0-9]{8}[a-zA-Z]$/;
-
-    if (dniRegex.test(rawDni)) {
-      const validChars = "TRWAGMYFPDXBNJZSQVHLCKET";
-      const letter = rawDni.charAt(8).toUpperCase();
-      const charIndex = parseInt(rawDni.substring(0, 8)) % 23;
-
-      return validChars.charAt(charIndex) === letter;
-    }
-
-    return false;
-  }
 }
 
 // Definir manualmente las propiedades válidas del modelo de usuario
@@ -88,6 +67,5 @@ export const validUserPropertiesUser: string[] = [
   "segundo_apellido",
   "telefono",
   "email",
-  "dni",
   // Agregar otras propiedades válidas aquí si es necesario
 ];

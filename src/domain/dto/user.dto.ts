@@ -11,8 +11,8 @@ const countUsers = async (): Promise<number> => {
   return userCount;
 };
 
-const createUser = async (user: any, foto: any, factura: any): Promise<User> => {
-  const newUser = await userOdm.saveUser(user, foto, factura);
+const createUser = async (user: any, foto: any): Promise<User> => {
+  const newUser = await userOdm.saveUser(user, foto);
 
   if (!newUser) {
     throw new CustomError("El usuario no ha sido registrado", 400);
@@ -39,7 +39,7 @@ const getAllUser = async (): Promise<User[]> => {
   return userList;
 };
 
-const updateUser = async (userData: any, idReceivedInParams: number, foto: any, factura: any): Promise<User> => {
+const updateUser = async (userData: any, idReceivedInParams: number, foto: any): Promise<User> => {
   const userToUpdate = await userDto.getUserById(idReceivedInParams);
   if (!userToUpdate) {
     throw new CustomError("Usuario no encontrado", 404);
@@ -52,7 +52,7 @@ const updateUser = async (userData: any, idReceivedInParams: number, foto: any, 
 
   Object.assign(userToUpdate, userData);
 
-  const userUpdated = await userOdm.saveUser(userToUpdate, foto, factura);
+  const userUpdated = await userOdm.saveUser(userToUpdate, foto);
   if (!userUpdated) {
     throw new CustomError("Los usuarios no han sido encontrados", 404);
   }

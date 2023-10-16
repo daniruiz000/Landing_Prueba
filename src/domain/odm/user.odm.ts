@@ -25,10 +25,6 @@ const validateInsertData = async (userData: User): Promise<void> => {
     throw new CustomError("El correo electrónico proporcionado no cumple con los requisitos", 400);
   }
 
-  if (userToValidate.dni && !userToValidate.validateDni()) {
-    throw new CustomError("El DNI proporcionado no cumple con los requisitos", 400);
-  }
-
   if (userToValidate.telefono && !userToValidate.validatePhoneNumber()) {
     throw new CustomError("El número de teléfono proporcionado no cumple con los requisitos", 400);
   }
@@ -52,12 +48,11 @@ const getUserById = async (id: number): Promise<User | null> => {
   return user;
 };
 
-const saveUser = async (userData: any, foto: string, factura: string): Promise<User> => {
+const saveUser = async (userData: any, foto: string): Promise<User> => {
   await validateInsertData(userData);
   const userNew = new User();
   Object.assign(userNew, userData);
   userNew.foto = foto;
-  userNew.factura = factura;
   const userSaved = await userRepository.save(userNew);
 
   return userSaved;

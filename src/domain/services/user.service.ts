@@ -6,13 +6,11 @@ const createUser = async (req: any, res: Response, next: NextFunction): Promise<
   try {
     const userDataInsert = req.body;
     const foto = req.files.foto ? req.files.foto[0].buffer.toString("base64") : null;
-    const factura = req.files.factura ? req.files.factura[0].buffer.toString("base64") : null;
-
     verifyIsPromotionActive();
     await verifyLimitOfUsers();
     verifyValidProperties(userDataInsert);
 
-    await userDto.createUser(userDataInsert, foto, factura);
+    await userDto.createUser(userDataInsert, foto);
 
     console.log("Usuario creado correctamente.");
     res.status(201).send("Usuario creado correctamente.");
@@ -71,10 +69,9 @@ const updateUserById = async (req: any, res: Response, next: NextFunction): Prom
     const credentials = req;
     const idReceivedInParams = parseInt(req.params.id);
     const foto = req.files.foto ? req.files.foto[0].buffer : null;
-    const factura = req.files.factura ? req.files.factura[0].buffer : null;
 
     verifyValidCredentials(credentials);
-    const updateUser = await userDto.updateUser(userDataInsert, idReceivedInParams, foto, factura);
+    const updateUser = await userDto.updateUser(userDataInsert, idReceivedInParams, foto);
 
     console.log("Usuario actualizado correctamente.");
     res.status(200).json(updateUser);
