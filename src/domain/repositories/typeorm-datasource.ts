@@ -24,5 +24,4 @@ export const AppDataSource = new DataSource({
   entities: [User], // Lista de entidades que quieres utilizar
   migrations: [], // Lista de migraciones (si las tienes)
   subscribers: [], // Lista de suscriptores (si los tienes)
-  timezone: "CET",
 });
