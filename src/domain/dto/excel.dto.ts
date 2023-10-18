@@ -2,6 +2,7 @@ import ExcelJS from "exceljs";
 import dotenv from "dotenv";
 import { userDto } from "./user.dto";
 import { CustomError } from "../../server/checkErrorRequest.middleware";
+import moment from "moment-timezone";
 
 dotenv.config();
 
@@ -46,25 +47,16 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
         worksheet.addRow({});
         worksheet.addRow({});
       }
-      const options: Intl.DateTimeFormatOptions = {
-        year: "2-digit",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      };
-
+      const createdAtWithOffset = moment(user.createdAt).add(2, "hours");
       worksheet.addRow({
         nombre: user.nombre.toUpperCase(),
         apellido: user.apellido.toUpperCase(),
         segundo_apellido: user.segundo_apellido.toUpperCase(),
         telefono: user.telefono.toUpperCase(),
         email: user.email,
-        createdAt: user.createdAt.toLocaleString("es-ES", options),
+        createdAt: createdAtWithOffset.toLocaleString(),
       });
-      console.log(user.createdAt);
-      console.log(user.createdAt.toLocaleString("es-ES", options));
+      console.log(user.createdAt.toLocaleString());
       if (user.foto) {
         const imgId = workbook.addImage({
           base64: user.foto,

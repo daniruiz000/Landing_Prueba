@@ -50,7 +50,7 @@ const getUserById = async (id: number): Promise<User | null> => {
 };
 
 const saveUser = async (userData: any, foto: string): Promise<User> => {
-  const spainTimezone = "Europe/Madrid"; // Zona horaria de España
+  const spainTimezone = "Europe/Madrid+02:00"; // Zona horaria de España
   const actualDate = moment().tz(spainTimezone); // Obtiene la hora local de España
   console.log({ actualDate });
   await validateInsertData(userData);
