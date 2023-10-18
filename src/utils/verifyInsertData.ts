@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import moment from "moment";
+import moment from "moment-timezone";
 
 import { CustomError } from "../server/checkErrorRequest.middleware";
 import { userDto } from "../domain/dto/user.dto";
@@ -14,13 +14,14 @@ const maxUsersLimit = parseInt(process.env.PROMOTION_MAX_USERS_LIMIT as string) 
 
 const formatedDate = process.env.FORMAT_DATE_MOMENT as string;
 const finishDate = process.env.PROMOTION_FINISH_DATE as string;
-const finishDateParsed = moment(finishDate, formatedDate).toDate() || undefined;
+const finishDateParsed = moment(finishDate, formatedDate) || undefined;
 const startDate = process.env.PROMOTION_START_DATE as string;
-const startDateParsed = moment(startDate, formatedDate).toDate() || undefined;
-
-const actualDate = new Date();
+const startDateParsed = moment(startDate, formatedDate) || undefined;
+const spainTimezone = "Europe/Madrid";
+const actualDate = moment().tz(spainTimezone);
 
 export const verifyIsPromotionActive = (): void => {
+  console.log({ startDate }, { actualDate }, { finishDateParsed });
   if (startDateParsed && actualDate < startDateParsed) {
     const formattedStartDate = moment(startDateParsed).format("DD/MM/YYYY - HH:mm:ss");
     throw new CustomError(`Todavía no se pueden añadir usuarios hasta ${formattedStartDate}.`, 400);
