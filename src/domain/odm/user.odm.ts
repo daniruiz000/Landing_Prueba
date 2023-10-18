@@ -2,7 +2,7 @@ import { type Repository } from "typeorm";
 import { User } from "../entities/User";
 import { AppDataSource } from "../repositories/typeorm-datasource";
 import { CustomError } from "../../server/checkErrorRequest.middleware";
-import moment from "moment";
+import moment from "moment-timezone";
 
 const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
@@ -50,7 +50,8 @@ const getUserById = async (id: number): Promise<User | null> => {
 };
 
 const saveUser = async (userData: any, foto: string): Promise<User> => {
-  const actualDate = moment().local();
+  const spainTimezone = "Europe/Madrid"; // Zona horaria de España
+  const actualDate = moment().tz(spainTimezone); // Obtiene la hora local de España
   console.log({ actualDate });
   await validateInsertData(userData);
   const userNew = new User();
