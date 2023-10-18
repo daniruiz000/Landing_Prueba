@@ -46,6 +46,14 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
         worksheet.addRow({});
         worksheet.addRow({});
       }
+      const options: Intl.DateTimeFormatOptions = {
+        year: "2-digit",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      };
 
       worksheet.addRow({
         nombre: user.nombre.toUpperCase(),
@@ -53,7 +61,7 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
         segundo_apellido: user.segundo_apellido.toUpperCase(),
         telefono: user.telefono.toUpperCase(),
         email: user.email,
-        createdAt: `${user.createdAt.getDate()}/${user.createdAt.getMonth()}/${user.createdAt.getFullYear()} - ${user.createdAt.getHours()}:${user.createdAt.getMinutes()}:${user.createdAt.getSeconds()}`,
+        createdAt: user.createdAt.toLocaleString("es-ES", options),
       });
       console.log(user.createdAt);
       console.log(`${user.createdAt.getDate()}/${user.createdAt.getMonth()}/${user.createdAt.getFullYear()} - ${user.createdAt.getHours()}:${user.createdAt.getMinutes()}:${user.createdAt.getSeconds()}`);
