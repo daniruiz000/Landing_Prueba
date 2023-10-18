@@ -55,6 +55,8 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
         email: user.email,
         createdAt: `${user.createdAt.getDate()}/${user.createdAt.getMonth()}/${user.createdAt.getFullYear()} - ${user.createdAt.getHours()}:${user.createdAt.getMinutes()}:${user.createdAt.getSeconds()}`,
       });
+      console.log(user.createdAt);
+      console.log(`${user.createdAt.getDate()}/${user.createdAt.getMonth()}/${user.createdAt.getFullYear()} - ${user.createdAt.getHours()}:${user.createdAt.getMinutes()}:${user.createdAt.getSeconds()}`);
       if (user.foto) {
         const imgId = workbook.addImage({
           base64: user.foto,
