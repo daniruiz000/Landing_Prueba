@@ -56,7 +56,7 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
         email: user.email,
         createdAt: createdAtWithOffset.toLocaleString(),
       });
-      console.log(user.createdAt.toLocaleString());
+
       if (user.foto) {
         const imgId = workbook.addImage({
           base64: user.foto,
