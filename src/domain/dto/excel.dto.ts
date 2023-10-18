@@ -36,10 +36,9 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
       };
     });
 
-    let currentRow = 2; // Iniciar en la fila 2 para dejar espacio para los encabezados
+    let currentRow = 2;
 
     users.forEach((user, index) => {
-      // Agregar una fila en blanco
       if (index > 0) {
         currentRow += 5;
         worksheet.addRow({});
@@ -48,17 +47,15 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
         worksheet.addRow({});
       }
 
-      // Agregar una fila para los datos del usuario
       worksheet.addRow({
         nombre: user.nombre.toUpperCase(),
         apellido: user.apellido.toUpperCase(),
         segundo_apellido: user.segundo_apellido.toUpperCase(),
         telefono: user.telefono.toUpperCase(),
-        email: user.email.toUpperCase(),
+        email: user.email,
         createdAt: `${user.createdAt.getDate()}/${user.createdAt.getMonth()}/${user.createdAt.getFullYear()} - ${user.createdAt.getHours()}:${user.createdAt.getHours()}:${user.createdAt.getSeconds()}`,
       });
 
-      // Agregar la imagen de "foto" si existe
       if (user.foto) {
         const imgId = workbook.addImage({
           base64: user.foto,
@@ -67,7 +64,7 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
 
         worksheet.addImage(imgId, {
           tl: { col: 6, row: currentRow - 1 },
-          ext: { width: 100, height: 100 }, // Ajustar el tamaño según sea necesario
+          ext: { width: 100, height: 100 },
         });
       }
     });

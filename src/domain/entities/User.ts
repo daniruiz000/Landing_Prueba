@@ -24,7 +24,7 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column({ type: "longtext", nullable: true }) // Usar "lonblob" para campos BLOB en PostgreSQL
+  @Column({ type: "longtext", nullable: true })
   foto: string;
 
   validateNombre(): boolean {
@@ -58,14 +58,4 @@ export class User {
   }
 }
 
-// Definir manualmente las propiedades válidas del modelo de usuario
-export const validUserPropertiesUser: string[] = [
-  "id",
-  "createdAt",
-  "nombre",
-  "apellido",
-  "segundo_apellido",
-  "telefono",
-  "email",
-  // Agregar otras propiedades válidas aquí si es necesario
-];
+export const validUserPropertiesUser: string[] = ["id", "createdAt", "nombre", "apellido", "segundo_apellido", "telefono", "email"];
