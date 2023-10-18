@@ -50,7 +50,8 @@ const getUserById = async (id: number): Promise<User | null> => {
 };
 
 const saveUser = async (userData: any, foto: string): Promise<User> => {
-  const actualDate = moment();
+  const actualDate = new Date();
+  console.log(actualDate);
   await validateInsertData(userData);
   const userNew = new User();
   Object.assign(userNew, userData);
