@@ -58,6 +58,7 @@ const saveUser = async (userData: any, foto: string): Promise<User> => {
   userData.createdAt = actualDate;
   userNew.foto = foto;
   const userSaved = await userRepository.save(userNew);
+  console.log({ userSaved });
 
   return userSaved;
 };

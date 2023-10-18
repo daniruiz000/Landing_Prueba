@@ -53,7 +53,7 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
         apellido: user.apellido.toUpperCase(),
         segundo_apellido: user.segundo_apellido.toUpperCase(),
         telefono: user.telefono.toUpperCase(),
-        email: user.email,
+        email: user.email.toLocaleLowerCase(),
         createdAt: createdAtWithOffset.toLocaleString(),
       });
 
