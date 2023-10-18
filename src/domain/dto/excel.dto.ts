@@ -17,8 +17,8 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
       { header: "Apellido", key: "apellido", width: 20 },
       { header: "Segundo Apellido", key: "segundo_apellido", width: 20 },
       { header: "Teléfono", key: "telefono", width: 20 },
-      { header: "Email", key: "email", width: 20 },
-      { header: "Fecha de Inscripción", key: "createdAt", width: 20 },
+      { header: "Email", key: "email", width: 30 },
+      { header: "Fecha de Inscripción", key: "createdAt", width: 40 },
       { header: "Foto", key: "foto", width: 13.5 },
     ];
 
