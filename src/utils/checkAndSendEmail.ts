@@ -13,7 +13,6 @@ const actualDateParsed = moment(actualDate, formatedDate).toDate() || undefined;
 const finishDate = process.env.PROMOTION_FINISH_DATE as string;
 const finishDateParsed = moment(finishDate, formatedDate).toDate() || undefined;
 const maxUsersLimit = parseInt(process.env.PROMOTION_MAX_USERS_LIMIT as string) || undefined;
-
 let isMailSent = false;
 
 export const checkAndSendEmail = async (): Promise<void> => {

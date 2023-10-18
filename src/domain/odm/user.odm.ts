@@ -2,6 +2,7 @@ import { type Repository } from "typeorm";
 import { User } from "../entities/User";
 import { AppDataSource } from "../repositories/typeorm-datasource";
 import { CustomError } from "../../server/checkErrorRequest.middleware";
+import moment from "moment";
 
 const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
@@ -49,9 +50,11 @@ const getUserById = async (id: number): Promise<User | null> => {
 };
 
 const saveUser = async (userData: any, foto: string): Promise<User> => {
+  const actualDate = moment();
   await validateInsertData(userData);
   const userNew = new User();
   Object.assign(userNew, userData);
+  userData.createdAt = actualDate;
   userNew.foto = foto;
   const userSaved = await userRepository.save(userNew);
 
