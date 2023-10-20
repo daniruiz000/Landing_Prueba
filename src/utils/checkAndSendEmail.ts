@@ -23,7 +23,7 @@ export const checkAndSendEmail = async (): Promise<void> => {
   if (!isMailSent) {
     const numberOfUsers = await userDto.countUsers();
 
-    if (actualDate >= finishDateParsed || (maxUsersLimit && numberOfUsers >= maxUsersLimit)) {
+    if (actualDate.toDate() >= finishDateParsed.toDate() || (maxUsersLimit && numberOfUsers >= maxUsersLimit)) {
       console.log("¡Es hora de enviar el correo electrónico!");
       const workbook = await excelDto.createExcelWithUsers();
       await mailDto.sendExcelByEmail(workbook);
