@@ -40,7 +40,6 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
     let currentRow = 2;
 
     users.forEach((user, index) => {
-      console.log({ user });
       if (index > 0) {
         currentRow += 5;
         worksheet.addRow({});
