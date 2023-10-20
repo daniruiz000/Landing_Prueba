@@ -14,15 +14,15 @@ const spainTimezone = "Europe/Madrid";
 const maxUsersLimit = parseInt(process.env.PROMOTION_MAX_USERS_LIMIT as string) || undefined;
 
 const startDate = process.env.PROMOTION_START_DATE as string;
-const startDateParsed = moment(startDate, "YYYY-MM-DD HH:mm:ss").tz(spainTimezone) || undefined;
+const startDateParsed = moment.tz(startDate, "YYYY-MM-DD HH:mm:ss", spainTimezone) || undefined;
 
 const finishDate = process.env.PROMOTION_FINISH_DATE as string;
-const finishDateParsed = moment(finishDate, "YYYY-MM-DD HH:mm:ss").tz(spainTimezone) || undefined;
+const finishDateParsed = moment.tz(finishDate, "YYYY-MM-DD HH:mm:ss", spainTimezone) || undefined;
 
 export const verifyIsPromotionActive = (): void => {
   const actualDate = moment().tz(spainTimezone);
-  const antesdetiempo = actualDate.isBefore(startDateParsed); // Compara minutos
-  const despuesdetiempo = actualDate.isAfter(finishDateParsed); // Compara minutos
+  const antesdetiempo = actualDate.isBefore(startDateParsed);
+  const despuesdetiempo = actualDate.isAfter(finishDateParsed);
   console.log({ antesdetiempo }, { despuesdetiempo }, { actualDate }, { finishDateParsed }, { startDateParsed });
 
   if (antesdetiempo) {
