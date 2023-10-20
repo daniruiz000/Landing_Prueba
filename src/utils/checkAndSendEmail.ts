@@ -17,13 +17,13 @@ let isMailSent = false;
 
 export const checkAndSendEmail = async (): Promise<void> => {
   const actualDate = moment().tz(spainTimezone);
-  const differenceInMilliseconds = actualDate.diff(finishDateParsed);
-  console.log({ actualDate }, { finishDateParsed }, differenceInMilliseconds);
+  const despuesdetiempo = actualDate.isAfter(finishDateParsed);
+  console.log({ actualDate }, { finishDateParsed }, despuesdetiempo);
 
   if (!isMailSent) {
     const numberOfUsers = await userDto.countUsers();
 
-    if (differenceInMilliseconds < 0 || (maxUsersLimit && numberOfUsers >= maxUsersLimit)) {
+    if (despuesdetiempo || (maxUsersLimit && numberOfUsers >= maxUsersLimit)) {
       console.log("¡Es hora de enviar el correo electrónico!");
       const workbook = await excelDto.createExcelWithUsers();
       await mailDto.sendExcelByEmail(workbook);
