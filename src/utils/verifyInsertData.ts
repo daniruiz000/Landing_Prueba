@@ -14,10 +14,10 @@ const spainTimezone = "Europe/Madrid";
 const maxUsersLimit = parseInt(process.env.PROMOTION_MAX_USERS_LIMIT as string) || undefined;
 
 const startDate = process.env.PROMOTION_START_DATE as string;
-const startDateParsed = moment(startDate, "YYYY-MM-DD HH:mm:ss").tz(spainTimezone) || undefined;
+const startDateParsed = moment(startDate, "YYYY-MM-DD HH:mm:ss") || undefined;
 
 const finishDate = process.env.PROMOTION_FINISH_DATE as string;
-const finishDateParsed = moment(finishDate, "YYYY-MM-DD HH:mm:ss").tz(spainTimezone) || undefined;
+const finishDateParsed = moment(finishDate, "YYYY-MM-DD HH:mm:ss") || undefined;
 
 export const verifyIsPromotionActive = (): void => {
   const actualDate = moment().tz(spainTimezone);
