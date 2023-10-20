@@ -17,7 +17,7 @@ let isMailSent = false;
 
 export const checkAndSendEmail = async (): Promise<void> => {
   const actualDate = moment().tz(spainTimezone);
-  const differenceInMilliseconds = finishDateParsed.diff(actualDate);
+  const differenceInMilliseconds = actualDate.diff(finishDateParsed);
   console.log({ actualDate }, { finishDateParsed }, differenceInMilliseconds);
 
   if (!isMailSent) {
