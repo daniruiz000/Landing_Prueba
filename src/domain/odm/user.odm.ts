@@ -51,16 +51,16 @@ const getUserById = async (id: number): Promise<User | null> => {
 
 const saveUser = async (userData: any, foto: string): Promise<User> => {
   const spainTimezone = "Europe/Madrid";
-  const actualDate = moment().tz(spainTimezone);
+  const actualDate = moment().tz(spainTimezone).toDate();
 
   await validateInsertData(userData);
 
   const userNew = new User();
 
   Object.assign(userNew, userData);
-  userData.createdAt = actualDate;
-  userNew.foto = foto;
 
+  userNew.foto = foto;
+  userNew.createdAt = actualDate;
   const userSaved = await userRepository.save(userNew);
 
   console.log({ userSaved }, { actualDate });
