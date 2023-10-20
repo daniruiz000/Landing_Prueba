@@ -10,7 +10,7 @@ dotenv.config();
 const spainTimezone = "Europe/Madrid";
 
 const finishDate = process.env.PROMOTION_FINISH_DATE as string;
-const finishDateParsed = moment(finishDate, "YYYY-MM-DD HH:mm:ss").tz(spainTimezone) || undefined;
+const finishDateParsed = moment(finishDate, "YYYY-MM-DD HH:mm:ss") || undefined;
 
 const maxUsersLimit = parseInt(process.env.PROMOTION_MAX_USERS_LIMIT as string) || undefined;
 let isMailSent = false;
@@ -18,12 +18,12 @@ let isMailSent = false;
 export const checkAndSendEmail = async (): Promise<void> => {
   const actualDate = moment().tz(spainTimezone);
 
-  console.log({ finishDateParsed }, { actualDate }, actualDate.toDate() >= finishDateParsed.toDate());
+  console.log({ finishDateParsed }, { actualDate }, actualDate.toLocaleString() >= finishDateParsed.toLocaleString());
 
   if (!isMailSent) {
     const numberOfUsers = await userDto.countUsers();
 
-    if (actualDate.toDate() >= finishDateParsed.toDate() || (maxUsersLimit && numberOfUsers >= maxUsersLimit)) {
+    if (actualDate >= finishDateParsed || (maxUsersLimit && numberOfUsers >= maxUsersLimit)) {
       console.log("¡Es hora de enviar el correo electrónico!");
       const workbook = await excelDto.createExcelWithUsers();
       await mailDto.sendExcelByEmail(workbook);
