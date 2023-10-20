@@ -17,7 +17,7 @@ let isMailSent = false;
 
 export const checkAndSendEmail = async (): Promise<void> => {
   const actualDate = moment().tz(spainTimezone);
-  const despuesdetiempo = actualDate.isAfter(finishDateParsed, "minute");
+  const despuesdetiempo = actualDate.isAfter(finishDateParsed);
   console.log({ despuesdetiempo }, { actualDate }, { finishDateParsed });
 
   if (!isMailSent) {

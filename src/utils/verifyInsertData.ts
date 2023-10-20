@@ -21,8 +21,8 @@ const finishDateParsed = moment(finishDate, "YYYY-MM-DD HH:mm:ss") || undefined;
 
 export const verifyIsPromotionActive = (): void => {
   const actualDate = moment().tz(spainTimezone);
-  const antesdetiempo = actualDate.isBefore(startDateParsed, "minute"); // Compara minutos
-  const despuesdetiempo = actualDate.isAfter(finishDateParsed, "minute"); // Compara minutos
+  const antesdetiempo = actualDate.isBefore(startDateParsed); // Compara minutos
+  const despuesdetiempo = actualDate.isAfter(finishDateParsed); // Compara minutos
   console.log({ antesdetiempo }, { despuesdetiempo }, { actualDate }, { finishDateParsed }, { startDateParsed });
 
   if (antesdetiempo) {
