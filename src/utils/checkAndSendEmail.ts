@@ -18,7 +18,7 @@ let isMailSent = false;
 export const checkAndSendEmail = async (): Promise<void> => {
   const actualDate = moment().tz(spainTimezone);
   const despuesdetiempo = actualDate.isAfter(finishDateParsed);
-  console.log({ actualDate }, finishDateParsed, { finishDateParsed }, despuesdetiempo);
+  console.log({ actualDate }, { finishDateParsed }, { finishDateParsed }, despuesdetiempo);
 
   if (!isMailSent) {
     const numberOfUsers = await userDto.countUsers();
