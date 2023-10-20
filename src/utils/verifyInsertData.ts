@@ -21,16 +21,16 @@ const finishDateParsed = moment(finishDate, "YYYY-MM-DD HH:mm:ss") || undefined;
 
 export const verifyIsPromotionActive = (): void => {
   const actualDate = moment().tz(spainTimezone);
-  const antesdetiempo = actualDate.isBefore(startDateParsed);
-  const despuesdetiempo = actualDate.isAfter(finishDateParsed);
+  const antesdetiempo = actualDate.isBefore(startDateParsed, "minute"); // Compara minutos
+  const despuesdetiempo = actualDate.isAfter(finishDateParsed, "minute"); // Compara minutos
   console.log({ antesdetiempo }, { despuesdetiempo }, { actualDate }, { finishDateParsed }, { startDateParsed });
 
-  if (!antesdetiempo) {
+  if (antesdetiempo) {
     const formattedStartDate = startDateParsed.format("DD/MM/YYYY - HH:mm:ss");
     throw new CustomError(`Todavía no se pueden añadir usuarios hasta ${formattedStartDate}.`, 400);
   }
 
-  if (!despuesdetiempo) {
+  if (despuesdetiempo) {
     const formattedFinishDate = finishDateParsed.format("DD/MM/YYYY - HH:mm:ss");
     throw new CustomError(`Se ha alcanzado la fecha de finalización ${formattedFinishDate}, no se pueden añadir más usuarios`, 400);
   }
