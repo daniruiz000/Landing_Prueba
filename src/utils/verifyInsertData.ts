@@ -25,12 +25,12 @@ export const verifyIsPromotionActive = (): void => {
   const despuesdetiempo = actualDate.isAfter(finishDateParsed);
   console.log({ antesdetiempo }, { despuesdetiempo }, { actualDate }, { finishDateParsed }, { startDateParsed });
 
-  if (actualDate.isBefore(startDateParsed)) {
+  if (!antesdetiempo) {
     const formattedStartDate = startDateParsed.format("DD/MM/YYYY - HH:mm:ss");
     throw new CustomError(`Todavía no se pueden añadir usuarios hasta ${formattedStartDate}.`, 400);
   }
 
-  if (actualDate.isAfter(finishDateParsed)) {
+  if (!despuesdetiempo) {
     const formattedFinishDate = finishDateParsed.format("DD/MM/YYYY - HH:mm:ss");
     throw new CustomError(`Se ha alcanzado la fecha de finalización ${formattedFinishDate}, no se pueden añadir más usuarios`, 400);
   }
