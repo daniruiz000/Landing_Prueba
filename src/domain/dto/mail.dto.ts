@@ -16,8 +16,8 @@ const formatedDate = process.env.FORMAT_DATE_MOMENT as string;
 const spainTimezone = "Europe/Madrid";
 
 const sendExcelByEmail = async (workbook: { xlsx: { writeBuffer: () => any } }): Promise<void> => {
-  const actualDate = moment().tz(spainTimezone);
-  const actualDateParsed = moment(actualDate, formatedDate).toDate() || undefined;
+  const actualDate = moment.tz(spainTimezone);
+  const actualDateParsed = moment.tz(actualDate, formatedDate).toDate() || undefined;
 
   const excelBuffer = await workbook.xlsx.writeBuffer();
 
