@@ -10,7 +10,7 @@ dotenv.config();
 const spainTimezone = "Europe/Madrid";
 
 const finishDate = process.env.PROMOTION_FINISH_DATE as string;
-const finishDateParsed = moment(finishDate, "YYYY-MM-DD HH:mm:ss").tz(spainTimezone) || undefined;
+const finishDateParsed = moment.tz(finishDate, "YYYY-MM-DD HH:mm:ss", spainTimezone) || undefined;
 
 const maxUsersLimit = parseInt(process.env.PROMOTION_MAX_USERS_LIMIT as string) || undefined;
 let isMailSent = false;
