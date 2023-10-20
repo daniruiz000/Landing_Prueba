@@ -8,26 +8,26 @@ import { mailDto } from "../domain/dto/mail.dto";
 dotenv.config();
 
 const spainTimezone = "Europe/Madrid";
-
 const finishDate = process.env.PROMOTION_FINISH_DATE as string;
 const finishDateParsed = moment.tz(finishDate, "YYYY-MM-DD HH:mm:ss", spainTimezone) || undefined;
-
 const maxUsersLimit = parseInt(process.env.PROMOTION_MAX_USERS_LIMIT as string) || undefined;
+
 let isMailSent = false;
 
 export const checkAndSendEmail = async (): Promise<void> => {
+  if (isMailSent) {
+    return;
+  }
+
   const actualDate = moment().tz(spainTimezone);
-  const despuesdetiempo = actualDate.isAfter(finishDateParsed);
-  console.log({ actualDate }, { finishDate }, { finishDateParsed }, { finishDateParsed }, despuesdetiempo);
+  const isAfterFinishDate = actualDate.isAfter(finishDateParsed);
+  const numberOfUsers = await userDto.countUsers();
+  const isMaxNumberOfUsers = maxUsersLimit && numberOfUsers >= maxUsersLimit;
 
-  if (!isMailSent) {
-    const numberOfUsers = await userDto.countUsers();
-
-    if (despuesdetiempo || (maxUsersLimit && numberOfUsers >= maxUsersLimit)) {
-      console.log("¡Es hora de enviar el correo electrónico!");
-      const workbook = await excelDto.createExcelWithUsers();
-      await mailDto.sendExcelByEmail(workbook);
-      isMailSent = true;
-    }
+  if (isAfterFinishDate || isMaxNumberOfUsers) {
+    console.log("¡Es hora de enviar el correo electrónico!");
+    const workbook = await excelDto.createExcelWithUsers();
+    await mailDto.sendExcelByEmail(workbook);
+    isMailSent = true;
   }
 };

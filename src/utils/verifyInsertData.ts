@@ -9,28 +9,25 @@ dotenv.config();
 
 const authEmail: string = process.env.AUTH_EMAIL as string;
 const authPassword: string = process.env.AUTH_PASSWORD as string;
-
 const spainTimezone = "Europe/Madrid";
 const maxUsersLimit = parseInt(process.env.PROMOTION_MAX_USERS_LIMIT as string) || undefined;
-
 const startDate = process.env.PROMOTION_START_DATE as string;
 const startDateParsed = moment.tz(startDate, "YYYY-MM-DD HH:mm:ss", spainTimezone) || undefined;
-
 const finishDate = process.env.PROMOTION_FINISH_DATE as string;
 const finishDateParsed = moment.tz(finishDate, "YYYY-MM-DD HH:mm:ss", spainTimezone) || undefined;
 
 export const verifyIsPromotionActive = (): void => {
   const actualDate = moment().tz(spainTimezone);
-  const antesdetiempo = actualDate.isBefore(startDateParsed);
-  const despuesdetiempo = actualDate.isAfter(finishDateParsed);
-  console.log({ antesdetiempo }, { despuesdetiempo }, { actualDate }, { finishDateParsed }, { startDateParsed });
 
-  if (antesdetiempo) {
+  const isBeforeStartDate = actualDate.isBefore(startDateParsed);
+  const isAfterFinishDate = actualDate.isAfter(finishDateParsed);
+
+  if (isBeforeStartDate) {
     const formattedStartDate = startDateParsed.format("DD/MM/YYYY - HH:mm:ss");
     throw new CustomError(`Todavía no se pueden añadir usuarios hasta ${formattedStartDate}.`, 400);
   }
 
-  if (despuesdetiempo) {
+  if (isAfterFinishDate) {
     const formattedFinishDate = finishDateParsed.format("DD/MM/YYYY - HH:mm:ss");
     throw new CustomError(`Se ha alcanzado la fecha de finalización ${formattedFinishDate}, no se pueden añadir más usuarios`, 400);
   }
@@ -39,7 +36,9 @@ export const verifyIsPromotionActive = (): void => {
 export const verifyLimitOfUsers = async (): Promise<void> => {
   if (maxUsersLimit) {
     const numberOfUsers = await userDto.countUsers();
-    if (numberOfUsers >= maxUsersLimit) {
+    const isMaxNumberOfUsers = maxUsersLimit && numberOfUsers >= maxUsersLimit;
+
+    if (isMaxNumberOfUsers) {
       throw new CustomError("Se ha alcanzado el límite máximo de usuarios permitidos", 400);
     }
   }
