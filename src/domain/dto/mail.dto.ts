@@ -12,12 +12,11 @@ const emailReciver = process.env.EMAIL_RECIVER as string;
 const database = process.env.SQL_DATABASE as string;
 const promocion = process.env.PROMOCION_NAME as string;
 
-const formatedDate = process.env.FORMAT_DATE_MOMENT as string;
 const spainTimezone = "Europe/Madrid";
 
 const sendExcelByEmail = async (workbook: { xlsx: { writeBuffer: () => any } }): Promise<void> => {
   const actualDate = moment.tz(spainTimezone);
-  const actualDateParsed = moment.tz(actualDate, formatedDate).toDate() || undefined;
+  const actualDateParsed = actualDate.toDate() || undefined;
 
   const excelBuffer = await workbook.xlsx.writeBuffer();
 
