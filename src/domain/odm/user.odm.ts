@@ -50,16 +50,20 @@ const getUserById = async (id: number): Promise<User | null> => {
 };
 
 const saveUser = async (userData: any, foto: string): Promise<User> => {
-  const spainTimezone = "Europe/Madrid"; // Zona horaria de España
-  const actualDate = moment().tz(spainTimezone); // Obtiene la hora local de España
+  const spainTimezone = "Europe/Madrid";
+  const actualDate = moment().tz(spainTimezone);
+
   await validateInsertData(userData);
+
   const userNew = new User();
+
   Object.assign(userNew, userData);
   userData.createdAt = actualDate;
   userNew.foto = foto;
+
   const userSaved = await userRepository.save(userNew);
-  const actualDateParsed = moment(userData.createdAt).add(2, "hours");
-  console.log({ userSaved }, { actualDateParsed });
+
+  console.log({ userSaved }, { actualDate });
 
   return userSaved;
 };

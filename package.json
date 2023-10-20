@@ -29,6 +29,7 @@
   "homepage": "https://github.com/daniruiz000/Landing_Prueba#readme",
   "dependencies": {
     "@types/express-validator": "^3.0.0",
+    "class-transformer": "^0.5.1",
     "cors": "^2.8.5",
     "csv-writer": "^1.6.0",
     "date-fns": "^2.30.0",

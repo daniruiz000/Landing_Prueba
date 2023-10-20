@@ -40,6 +40,7 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
     let currentRow = 2;
 
     users.forEach((user, index) => {
+      console.log({ user });
       if (index > 0) {
         currentRow += 5;
         worksheet.addRow({});
@@ -47,14 +48,14 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
         worksheet.addRow({});
         worksheet.addRow({});
       }
-      const createdAtWithOffset = moment(user.createdAt).add(2, "hours");
+
       worksheet.addRow({
         nombre: user.nombre.toUpperCase(),
         apellido: user.apellido.toUpperCase(),
         segundo_apellido: user.segundo_apellido.toUpperCase(),
         telefono: user.telefono.toUpperCase(),
         email: user.email.toLocaleLowerCase(),
-        createdAt: createdAtWithOffset.toLocaleString(),
+        createdAt: moment.tz(user.createdAt, "Europe/Madrid").add(2, "hours").format("DD/MM/YYYY - HH:mm:ss"),
       });
 
       if (user.foto) {

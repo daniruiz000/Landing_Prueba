@@ -6,7 +6,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamp" })
   createdAt: Date;
 
   @Column()

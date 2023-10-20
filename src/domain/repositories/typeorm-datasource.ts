@@ -22,6 +22,4 @@ export const AppDataSource = new DataSource({
   synchronize: true, // Esto sincronizará automáticamente las entidades con la base de datos (solo para desarrollo, no se recomienda en producción)
   logging: false, // Puedes habilitar el registro de consultas si lo deseas
   entities: [User], // Lista de entidades que quieres utilizar
-  migrations: [], // Lista de migraciones (si las tienes)
-  subscribers: [], // Lista de suscriptores (si los tienes)
 });

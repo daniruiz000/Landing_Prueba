@@ -10,18 +10,19 @@ dotenv.config();
 const authEmail: string = process.env.AUTH_EMAIL as string;
 const authPassword: string = process.env.AUTH_PASSWORD as string;
 
+const spainTimezone = "Europe/Madrid";
 const maxUsersLimit = parseInt(process.env.PROMOTION_MAX_USERS_LIMIT as string) || undefined;
 
-const formatedDate = process.env.FORMAT_DATE_MOMENT as string;
-const finishDate = process.env.PROMOTION_FINISH_DATE as string;
-const finishDateParsed = moment(finishDate, formatedDate) || undefined;
 const startDate = process.env.PROMOTION_START_DATE as string;
-const startDateParsed = moment(startDate, formatedDate) || undefined;
-const spainTimezone = "Europe/Madrid";
-const actualDate = moment().tz(spainTimezone);
+const startDateParsed = moment(startDate, "YYYY-MM-DD HH:mm:ss") || undefined;
+
+const finishDate = process.env.PROMOTION_FINISH_DATE as string;
+const finishDateParsed = moment(finishDate, "YYYY-MM-DD HH:mm:ss") || undefined;
 
 export const verifyIsPromotionActive = (): void => {
-  console.log({ startDate }, { actualDate }, { finishDateParsed });
+  const actualDate = moment().tz(spainTimezone);
+  console.log({ startDateParsed }, { actualDate }, { finishDateParsed });
+
   if (startDateParsed && actualDate < startDateParsed) {
     const formattedStartDate = moment(startDateParsed).format("DD/MM/YYYY - HH:mm:ss");
     throw new CustomError(`Todavía no se pueden añadir usuarios hasta ${formattedStartDate}.`, 400);
