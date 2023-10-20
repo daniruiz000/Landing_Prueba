@@ -55,7 +55,7 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
         segundo_apellido: user.segundo_apellido.toUpperCase(),
         telefono: user.telefono.toUpperCase(),
         email: user.email.toLocaleLowerCase(),
-        createdAt: moment.tz(user.createdAt, "Europe/Madrid").add(2, "hours").format("DD/MM/YYYY - HH:mm:ss"),
+        createdAt: moment.tz(user.createdAt, "Europe/Madrid").format("DD/MM/YYYY - HH:mm:ss"),
       });
 
       if (user.foto) {
