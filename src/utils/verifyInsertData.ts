@@ -21,7 +21,9 @@ const finishDateParsed = moment(finishDate, "YYYY-MM-DD HH:mm:ss") || undefined;
 
 export const verifyIsPromotionActive = (): void => {
   const actualDate = moment().tz(spainTimezone);
-  console.log({ startDateParsed }, { actualDate }, { finishDateParsed });
+  const antesdetiempo = actualDate.isBefore(startDateParsed);
+  const despuesdetiempo = actualDate.isAfter(finishDateParsed);
+  console.log({ antesdetiempo }, { despuesdetiempo });
 
   if (actualDate.isBefore(startDateParsed)) {
     const formattedStartDate = startDateParsed.format("DD/MM/YYYY - HH:mm:ss");
