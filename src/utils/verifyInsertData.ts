@@ -23,7 +23,7 @@ export const verifyIsPromotionActive = (): void => {
   const actualDate = moment().tz(spainTimezone);
   const antesdetiempo = actualDate.isBefore(startDateParsed);
   const despuesdetiempo = actualDate.isAfter(finishDateParsed);
-  console.log({ antesdetiempo }, { despuesdetiempo });
+  console.log({ antesdetiempo }, { despuesdetiempo }, { actualDate }, { finishDateParsed }, { startDateParsed });
 
   if (actualDate.isBefore(startDateParsed)) {
     const formattedStartDate = startDateParsed.format("DD/MM/YYYY - HH:mm:ss");
