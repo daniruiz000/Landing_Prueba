@@ -21,6 +21,7 @@ export const checkAndSendEmail = async (): Promise<void> => {
 
   const actualDate = moment().tz(spainTimezone);
   const isAfterFinishDate = actualDate.isAfter(finishDateParsed);
+
   const numberOfUsers = await userDto.countUsers();
   const isMaxNumberOfUsers = maxUsersLimit && numberOfUsers >= maxUsersLimit;
 

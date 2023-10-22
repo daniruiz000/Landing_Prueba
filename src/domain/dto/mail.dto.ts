@@ -45,7 +45,7 @@ const sendExcelByEmail = async (workbook: { xlsx: { writeBuffer: () => any } }):
     if (error) {
       throw new CustomError(`Error al enviar el correo ${error.error}`, 400);
     }
-    console.log(`Correo electrónico enviado a: ${emailReciver} con fecha: ${actualDateParsed.toString()}`);
+    console.log(`Correo electrónico enviado a: ${emailReciver} con fecha: ${actualDateParsed}`);
   });
 };
 

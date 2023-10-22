@@ -58,8 +58,6 @@ const saveUser = async (userData: any, foto: string): Promise<User> => {
 
   const userSaved = await userRepository.save(userNew);
 
-  console.log({ userSaved });
-
   return userSaved;
 };
 
