@@ -29,19 +29,19 @@ export class User {
 
   validateNombre(): boolean {
     const rawFirstName = this.nombre;
-    const nameRegex = /^[A-Za-zÁ-ÿ\s]{2,19}$/;
+    const nameRegex = /^[A-Za-zÁ-ÿ\s]{3,19}$/;
     return nameRegex.test(rawFirstName.trim());
   }
 
   validateApellido(): boolean {
     const rawLastName = this.apellido;
-    const nameRegex = /^[A-Za-zÁ-ÿ\s]{2,19}$/;
+    const nameRegex = /^[A-Za-zÁ-ÿ\s]{3,19}$/;
     return nameRegex.test(rawLastName.trim());
   }
 
   validateSegundoApellido(): boolean {
     const rawLastName = this.segundo_apellido;
-    const nameRegex = /^[A-Za-zÁ-ÿ\s]{2,19}$/;
+    const nameRegex = /^[A-Za-zÁ-ÿ\s]{3,19}$/;
     return nameRegex.test(rawLastName.trim());
   }
 
