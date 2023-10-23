@@ -39,7 +39,7 @@ export const verifyLimitOfUsers = async (): Promise<void> => {
     const isMaxNumberOfUsers = maxUsersLimit && numberOfUsers >= maxUsersLimit;
 
     if (isMaxNumberOfUsers) {
-      throw new CustomError("Se ha alcanzado el límite máximo de usuarios permitidos", 400);
+      throw new CustomError("Se ha alcanzado el límite máximo de usuarios permitidos que se pueden registrar", 400);
     }
   }
 };
