@@ -4,8 +4,9 @@ import { userOdm } from "../odm/user.odm";
 
 const countUsers = async (): Promise<number> => {
   const userCount = await userOdm.countUsers();
-  if (!userCount) {
-    throw new CustomError("Fallo en el recuento de usuarios", 400);
+
+  if (userCount === null) {
+    throw new CustomError("No se pudieron leer los usuarios", 400);
   }
 
   return userCount;
