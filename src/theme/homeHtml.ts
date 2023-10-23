@@ -1,4 +1,4 @@
-const database = process.env.SQL_DATABASE as string;
+const promotion = process.env.PROMOCION_NAME as string;
 
 export const pageStyles = `
         <style>
@@ -6,7 +6,16 @@ export const pageStyles = `
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             text-align: center;
-            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+          }
+          div {
+            align-selft: center;
+            margin: 200px auto;
+            width: 300px;
           }
           h3 {
             color: #333;
@@ -31,7 +40,10 @@ export const pageStyles = `
       `;
 
 export const pageContent = `
-        <h3>Esta es la home de nuestra API.</h3>
-        <p>Estamos utilizando la BBDD de ${database}.</p>
+      <div>
+        <h3>BIENVENIDO AL SERVIDOR DE ${promotion}.</h3>
+        <p>Necesita logarse para poder tener acceso a los servicios de administrador.</p>
         <a href="/login">Acceso a Login</a>
+      </div>
+        
       `;

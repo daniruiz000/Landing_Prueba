@@ -10,7 +10,7 @@ const emailSender = process.env.EMAIL_SENDER as string;
 const emailSenderPassword = process.env.EMAIL_SENDER_PASSWORD as string;
 const emailReciver = process.env.EMAIL_RECIVER as string;
 const database = process.env.SQL_DATABASE as string;
-const promocion = process.env.PROMOCION_NAME as string;
+const promotion = process.env.PROMOCION_NAME as string;
 
 const spainTimezone = "Europe/Madrid";
 
@@ -34,7 +34,7 @@ const sendExcelByEmail = async (workbook: { xlsx: { writeBuffer: () => any } }):
     subject: `Excel de usuarios de la promoción: ${database}.`,
     text: `
     Hola, buenas.
-    Adjunto encontrarás el archivo Excel con la información de los usuarios inscritos en la promoción de ${promocion}.
+    Adjunto encontrarás el archivo Excel con la información de los usuarios inscritos en la promoción de ${promotion}.
     Muchas gracias.
     Un saludo.
     `,
