@@ -14,5 +14,5 @@
     "strictPropertyInitialization": false
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["**/*.spec.ts", "dist/*", "private/**/*"]
+  "exclude": ["**/*.spec.ts", "dist/*", "private/**/*", ".prettierrc"]
 }
