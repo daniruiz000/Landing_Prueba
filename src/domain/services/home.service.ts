@@ -2,11 +2,11 @@ import { type Request, type Response, type NextFunction } from "express";
 import * as fs from "fs";
 import path from "path";
 
-import { verifyValidCredentials } from "../../utils/verifyInsertData";
 import { generateToken } from "../../utils/token";
 import { pageContent, pageStyles } from "../../theme/homeHtml";
 
 import { excelDto } from "../dto/excel.dto";
+import { verifyDto } from "../dto/verify.dto";
 
 const SQL_DATABASE: string = process.env.SQL_DATABASE as string;
 
@@ -28,7 +28,7 @@ const showLoginPage = async (req: Request, res: Response, next: NextFunction): P
 
 const doLogin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    verifyValidCredentials(req.body);
+    verifyDto.verifyValidCredentials(req.body);
     const { email, password } = req.body;
     const jwtToken = generateToken(email, password);
     console.log("Usuario logado correctamente");
@@ -40,7 +40,7 @@ const doLogin = async (req: Request, res: Response, next: NextFunction): Promise
 
 const generateExcelAndSendToDownload = async (req: any, res: Response, next: NextFunction): Promise<void> => {
   try {
-    verifyValidCredentials(req);
+    verifyDto.verifyValidCredentials(req);
     const workbook = await excelDto.createExcelWithUsers();
 
     const fileName = `users_${SQL_DATABASE}.xlsx`;

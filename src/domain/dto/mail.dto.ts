@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 
 import { CustomError } from "../../server/checkErrorRequest.middleware";
 import { type Workbook } from "exceljs";
+import { excelDto } from "./excel.dto";
 
 dotenv.config();
 
@@ -54,6 +55,12 @@ const sendExcelByEmail = async (workbook: Workbook): Promise<void> => {
   }
 };
 
+export const sendExcelWithUsersByMail = async (): Promise<void> => {
+  const workbook = await excelDto.createExcelWithUsers();
+  await mailDto.sendExcelByEmail(workbook);
+};
+
 export const mailDto = {
   sendExcelByEmail,
+  sendExcelWithUsersByMail,
 };

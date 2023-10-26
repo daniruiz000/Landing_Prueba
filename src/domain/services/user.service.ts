@@ -1,15 +1,15 @@
 import { type Response, type NextFunction } from "express";
 import { userDto } from "../dto/user.dto";
-import { verifyIsPromotionActive, verifyLimitOfUsers, verifyValidCredentials, verifyValidProperties } from "../../utils/verifyInsertData";
+import { verifyDto } from "../dto/verify.dto";
 
 const createUser = async (req: any, res: Response, next: NextFunction): Promise<void> => {
   try {
     const userDataInsert = req.body;
     const foto = req.files.foto ? req.files.foto[0].buffer.toString("base64") : null;
 
-    verifyIsPromotionActive();
-    await verifyLimitOfUsers();
-    verifyValidProperties(userDataInsert);
+    verifyDto.verifyIsPromotionActive();
+    await verifyDto.verifyLimitOfUsers();
+    verifyDto.verifyValidProperties(userDataInsert);
 
     await userDto.createUser(userDataInsert, foto);
 
@@ -24,7 +24,7 @@ const getAllUsers = async (req: any, res: Response, next: NextFunction): Promise
   try {
     const credentials = req;
 
-    verifyValidCredentials(credentials);
+    verifyDto.verifyValidCredentials(credentials);
     const userArray = await userDto.getAllUser();
 
     console.log("Usuarios obtenidos correctamente.");
@@ -39,7 +39,7 @@ const getUserById = async (req: any, res: Response, next: NextFunction): Promise
     const credentials = req;
     const idReceivedInParams = parseInt(req.params.id);
 
-    verifyValidCredentials(credentials);
+    verifyDto.verifyValidCredentials(credentials);
     const user = await userDto.getUserById(idReceivedInParams);
 
     console.log("Usuario obtenido correctamente.");
@@ -54,7 +54,7 @@ const deleteUserById = async (req: any, res: Response, next: NextFunction): Prom
     const credentials = req;
     const idReceivedInParams = parseInt(req.params.id);
 
-    verifyValidCredentials(credentials);
+    verifyDto.verifyValidCredentials(credentials);
     await userDto.deleteUserById(idReceivedInParams);
 
     console.log("Usuario borrado correctamente.");
@@ -71,7 +71,7 @@ const updateUserById = async (req: any, res: Response, next: NextFunction): Prom
     const idReceivedInParams = parseInt(req.params.id);
     const foto = req.files.foto ? req.files.foto[0].buffer : null;
 
-    verifyValidCredentials(credentials);
+    verifyDto.verifyValidCredentials(credentials);
     const updateUser = await userDto.updateUser(userDataInsert, idReceivedInParams, foto);
 
     console.log("Usuario actualizado correctamente.");
