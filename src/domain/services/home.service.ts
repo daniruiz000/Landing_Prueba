@@ -6,7 +6,7 @@ import { generateToken } from "../../utils/token";
 import { pageContent, pageStyles } from "../../theme/homeHtml";
 
 import { excelDto } from "../dto/excel.dto";
-import { verifyDto } from "../dto/verify.dto";
+import { verifyDto } from "../dto/promotionDto";
 
 const SQL_DATABASE: string = process.env.SQL_DATABASE as string;
 

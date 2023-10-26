@@ -1,16 +1,18 @@
 import { type Response, type NextFunction } from "express";
 import { userDto } from "../dto/user.dto";
-import { verifyDto } from "../dto/verify.dto";
+import { promotionDto } from "../dto/promotionDto";
 
 const createUser = async (req: any, res: Response, next: NextFunction): Promise<void> => {
   try {
     const userDataInsert = req.body;
     const foto = req.files.foto ? req.files.foto[0].buffer.toString("base64") : null;
 
-    verifyDto.verifyIsPromotionActive();
-    await verifyDto.verifyLimitOfUsers();
-    verifyDto.verifyValidProperties(userDataInsert);
-    const userDataValidated = await verifyDto.verifyInsertData(userDataInsert);
+    promotionDto.verifyIsPromotionActive();
+    await promotionDto.verifyLimitOfUsers();
+
+    userDto.verifyValidProperties(userDataInsert);
+    const userDataValidated = await userDto.verifyInsertData(userDataInsert);
+
     await userDto.createUser(userDataValidated, foto);
 
     console.log("Usuario creado correctamente.");
@@ -24,7 +26,7 @@ const getAllUsers = async (req: any, res: Response, next: NextFunction): Promise
   try {
     const credentials = req;
 
-    verifyDto.verifyValidCredentials(credentials);
+    promotionDto.verifyValidCredentials(credentials);
     const userArray = await userDto.getAllUser();
 
     console.log("Usuarios obtenidos correctamente.");
@@ -39,7 +41,7 @@ const getUserById = async (req: any, res: Response, next: NextFunction): Promise
     const credentials = req;
     const idReceivedInParams = parseInt(req.params.id);
 
-    verifyDto.verifyValidCredentials(credentials);
+    promotionDto.verifyValidCredentials(credentials);
     const user = await userDto.getUserById(idReceivedInParams);
 
     console.log("Usuario obtenido correctamente.");
@@ -54,7 +56,7 @@ const deleteUserById = async (req: any, res: Response, next: NextFunction): Prom
     const credentials = req;
     const idReceivedInParams = parseInt(req.params.id);
 
-    verifyDto.verifyValidCredentials(credentials);
+    promotionDto.verifyValidCredentials(credentials);
     await userDto.deleteUserById(idReceivedInParams);
 
     console.log("Usuario borrado correctamente.");
@@ -71,7 +73,7 @@ const updateUserById = async (req: any, res: Response, next: NextFunction): Prom
     const idReceivedInParams = parseInt(req.params.id);
     const foto = req.files.foto ? req.files.foto[0].buffer : null;
 
-    verifyDto.verifyValidCredentials(credentials);
+    promotionDto.verifyValidCredentials(credentials);
     const updateUser = await userDto.updateUser(userDataInsert, idReceivedInParams, foto);
 
     console.log("Usuario actualizado correctamente.");
