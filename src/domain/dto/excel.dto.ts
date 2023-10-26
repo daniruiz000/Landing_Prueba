@@ -39,39 +39,43 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
 
     let currentRow = 2;
 
-    users.forEach((user, index) => {
-      if (index > 0) {
-        currentRow += 5;
-        worksheet.addRow({});
-        worksheet.addRow({});
-        worksheet.addRow({});
-        worksheet.addRow({});
-      }
-
-      worksheet.addRow({
+    users.forEach((user) => {
+      const row = worksheet.addRow({
         nombre: user.nombre.toUpperCase(),
         apellido: user.apellido.toUpperCase(),
         segundo_apellido: user.segundo_apellido.toUpperCase(),
         telefono: user.telefono.toUpperCase(),
         email: user.email.toLocaleLowerCase(),
         createdAt: moment.tz(user.createdAt, "Europe/Madrid").format("DD/MM/YYYY - HH:mm:ss"),
+        foto: user.foto ? "Imagen" : "No hay foto",
       });
 
       if (user.foto) {
         const imgId = workbook.addImage({
           base64: user.foto,
-          extension: "jpeg",
+          extension: "png",
         });
 
         worksheet.addImage(imgId, {
           tl: { col: 6, row: currentRow - 1 },
           ext: { width: 100, height: 100 },
         });
+
+        row.height = 75;
+      } else {
+        row.height = 30;
       }
+      currentRow++;
     });
 
     worksheet.eachRow((row) => {
       row.alignment = { vertical: "middle", horizontal: "center" };
+      for (let i = 1; i <= 7; i++) {
+        row.getCell(i).border = {
+          top: { style: "medium" },
+          bottom: { style: "medium" },
+        };
+      }
     });
 
     return workbook;
