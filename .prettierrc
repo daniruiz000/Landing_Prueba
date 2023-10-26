@@ -6,5 +6,5 @@
   "singleAttributePerLine": false,
   "quoteProps": "consistent",
   "semi": true,
-  "printWidth": 600
+  "printWidth": 140
 }

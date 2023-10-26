@@ -41,7 +41,7 @@ const sendExcelByEmail = async (workbook: Workbook): Promise<void> => {
       Muchas gracias.
       Un saludo.
       `,
-      attachments: [{ filename: "users.xlsx", content: Buffer.from(excelBuffer) }],
+      attachments: [{ filename: `usuarios-${promotion}.xlsx`, content: Buffer.from(excelBuffer) }],
     };
 
     transporter.sendMail(mailOptions, (error: any, info: { response: any }) => {

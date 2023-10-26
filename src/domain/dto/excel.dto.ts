@@ -1,14 +1,20 @@
 import ExcelJS from "exceljs";
 import moment from "moment-timezone";
 
+import dotenv from "dotenv";
+
 import { userDto } from "./user.dto";
 import { CustomError } from "../../server/checkErrorRequest.middleware";
+
+dotenv.config();
+
+const promotion = process.env.PROMOCION_NAME as string;
 
 const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
   try {
     const users = await userDto.getAllUser();
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Usuarios");
+    const worksheet = workbook.addWorksheet(`usuarios-${promotion}`);
 
     worksheet.columns = [
       { header: "Nombre", key: "nombre", width: 20 },
