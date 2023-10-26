@@ -1,7 +1,7 @@
 import moment from "moment";
 import { CustomError } from "../../server/checkErrorRequest.middleware";
-import { isPromotionOpened, isPromotionClosed, isMaxNumOfUsers } from "../../utils/verifyIData";
-import { validUserPropertiesUser } from "../entities/User";
+import { isPromotionOpened, isPromotionClosed, isMaxNumOfUsers } from "../../utils/promotionUtils";
+import { User, validUserPropertiesUser } from "../entities/User";
 
 const authEmail: string = process.env.AUTH_EMAIL as string;
 const authPassword: string = process.env.AUTH_PASSWORD as string;
@@ -55,9 +55,36 @@ export const verifyValidCredentials = (req: any): void => {
   }
 };
 
+const verifyInsertData = async (userData: User): Promise<User> => {
+  const userToValidate = new User();
+  Object.assign(userToValidate, userData);
+
+  if (userToValidate.nombre && !userToValidate.validateNombre()) {
+    throw new CustomError("El nombre proporcionado no cumple con los requisitos", 400);
+  }
+
+  if (userToValidate.apellido && !userToValidate.validateApellido()) {
+    throw new CustomError("El apellido proporcionado no cumple con los requisitos", 400);
+  }
+
+  if (userToValidate.segundo_apellido && !userToValidate.validateSegundoApellido()) {
+    throw new CustomError("El segundo apellido proporcionado no cumple con los requisitos", 400);
+  }
+
+  if (userToValidate.email && !userToValidate.validateEmail()) {
+    throw new CustomError("El correo electrónico proporcionado no cumple con los requisitos", 400);
+  }
+
+  if (userToValidate.telefono && !userToValidate.validatePhoneNumber()) {
+    throw new CustomError("El número de teléfono proporcionado no cumple con los requisitos", 400);
+  }
+  return userToValidate;
+};
+
 export const verifyDto = {
   verifyIsPromotionActive,
   verifyLimitOfUsers,
   verifyValidProperties,
   verifyValidCredentials,
+  verifyInsertData,
 };

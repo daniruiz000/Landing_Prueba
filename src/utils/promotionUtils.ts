@@ -1,7 +1,8 @@
-import moment from "moment-timezone";
 import dotenv from "dotenv";
+import moment from "moment-timezone";
 
 import { userDto } from "../domain/dto/user.dto";
+import { mailDto } from "../domain/dto/mail.dto";
 
 dotenv.config();
 
@@ -11,6 +12,8 @@ const startDate = process.env.PROMOTION_START_DATE as string;
 const startDateParsed = moment.tz(startDate, "YYYY-MM-DD HH:mm:ss", spainTimezone) || undefined;
 const finishDate = process.env.PROMOTION_FINISH_DATE as string;
 const finishDateParsed = moment.tz(finishDate, "YYYY-MM-DD HH:mm:ss", spainTimezone) || undefined;
+
+let isMailSent = false;
 
 export const isPromotionOpened = (): boolean => {
   const actualDate = moment().tz(spainTimezone);
@@ -38,4 +41,20 @@ export const isMaxNumOfUsers = async (): Promise<boolean> => {
     return false;
   }
   return true;
+};
+
+export const checkPromotionIsFinishAndSendEmail = async (): Promise<void> => {
+  if (isMailSent) {
+    return;
+  }
+
+  const isAfterFinishDate = isPromotionClosed();
+  const isMaxNumberOfUsers = await isMaxNumOfUsers();
+  if (!isAfterFinishDate && !isMaxNumberOfUsers) {
+    return;
+  }
+
+  console.log("Ha finalizado la promoción. ¡Es hora de enviar el correo electrónico!");
+  await mailDto.sendExcelWithUsersByMail();
+  isMailSent = true;
 };

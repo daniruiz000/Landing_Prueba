@@ -10,8 +10,8 @@ const createUser = async (req: any, res: Response, next: NextFunction): Promise<
     verifyDto.verifyIsPromotionActive();
     await verifyDto.verifyLimitOfUsers();
     verifyDto.verifyValidProperties(userDataInsert);
-
-    await userDto.createUser(userDataInsert, foto);
+    const userDataValidated = await verifyDto.verifyInsertData(userDataInsert);
+    await userDto.createUser(userDataValidated, foto);
 
     console.log("Usuario creado correctamente.");
     res.status(201).send("Usuario creado correctamente.");

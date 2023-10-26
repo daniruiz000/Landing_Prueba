@@ -1,10 +1,10 @@
 import { CustomError } from "../../server/checkErrorRequest.middleware";
-import { validUserPropertiesUser, User } from "../entities/User";
+import { type User, validUserPropertiesUser } from "../entities/User";
+
 import { userOdm } from "../odm/user.odm";
 
 const countUsers = async (): Promise<number> => {
   const userCount = await userOdm.countUsers();
-
   if (userCount === null) {
     throw new CustomError("No se pudieron leer los usuarios", 400);
   }
@@ -12,36 +12,8 @@ const countUsers = async (): Promise<number> => {
   return userCount;
 };
 
-const validateInsertData = async (userData: User): Promise<User> => {
-  const userToValidate = new User();
-  Object.assign(userToValidate, userData);
-
-  if (userToValidate.nombre && !userToValidate.validateNombre()) {
-    throw new CustomError("El nombre proporcionado no cumple con los requisitos", 400);
-  }
-
-  if (userToValidate.apellido && !userToValidate.validateApellido()) {
-    throw new CustomError("El apellido proporcionado no cumple con los requisitos", 400);
-  }
-
-  if (userToValidate.segundo_apellido && !userToValidate.validateSegundoApellido()) {
-    throw new CustomError("El segundo apellido proporcionado no cumple con los requisitos", 400);
-  }
-
-  if (userToValidate.email && !userToValidate.validateEmail()) {
-    throw new CustomError("El correo electrónico proporcionado no cumple con los requisitos", 400);
-  }
-
-  if (userToValidate.telefono && !userToValidate.validatePhoneNumber()) {
-    throw new CustomError("El número de teléfono proporcionado no cumple con los requisitos", 400);
-  }
-  return userToValidate;
-};
-
-const createUser = async (userData: any, foto: any): Promise<User> => {
-  const userDataValidated = await userDto.validateInsertData(userData);
+const createUser = async (userDataValidated: User, foto: any): Promise<User> => {
   const newUser = await userOdm.saveUser(userDataValidated, foto);
-
   if (!newUser) {
     throw new CustomError("El usuario no ha sido registrado", 400);
   }
@@ -100,7 +72,6 @@ const deleteUserById = async (id: number): Promise<User> => {
 
 export const userDto = {
   countUsers,
-  validateInsertData,
   createUser,
   getUserById,
   getAllUser,
