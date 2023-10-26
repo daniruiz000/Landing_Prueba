@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment from "moment-timezone";
 import dotenv from "dotenv";
 
 import { userDto } from "../domain/dto/user.dto";

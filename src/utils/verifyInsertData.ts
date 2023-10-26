@@ -1,5 +1,5 @@
-import dotenv from "dotenv";
 import moment from "moment-timezone";
+import dotenv from "dotenv";
 
 import { CustomError } from "../server/checkErrorRequest.middleware";
 import { userDto } from "../domain/dto/user.dto";
@@ -18,7 +18,6 @@ const finishDateParsed = moment.tz(finishDate, "YYYY-MM-DD HH:mm:ss", spainTimez
 
 export const verifyIsPromotionActive = (): void => {
   const actualDate = moment().tz(spainTimezone);
-
   const isBeforeStartDate = actualDate.isBefore(startDateParsed);
   const isAfterFinishDate = actualDate.isAfter(finishDateParsed);
 

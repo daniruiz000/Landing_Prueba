@@ -1,8 +1,9 @@
-import moment from "moment";
 import nodemailer from "nodemailer";
+import moment from "moment-timezone";
 import dotenv from "dotenv";
 
 import { CustomError } from "../../server/checkErrorRequest.middleware";
+import { type Workbook } from "exceljs";
 
 dotenv.config();
 
@@ -14,39 +15,43 @@ const promotion = process.env.PROMOCION_NAME as string;
 
 const spainTimezone = "Europe/Madrid";
 
-const sendExcelByEmail = async (workbook: { xlsx: { writeBuffer: () => any } }): Promise<void> => {
-  const actualDate = moment.tz(spainTimezone);
-  const actualDateParsed = actualDate.toLocaleString();
+const sendExcelByEmail = async (workbook: Workbook): Promise<void> => {
+  try {
+    const actualDate = moment.tz(spainTimezone);
+    const actualDateParsed = actualDate.toLocaleString();
 
-  const excelBuffer = await workbook.xlsx.writeBuffer();
+    const excelBuffer = await workbook.xlsx.writeBuffer();
 
-  const transporter = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-      user: emailSender,
-      pass: emailSenderPassword,
-    },
-  });
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: emailSender,
+        pass: emailSenderPassword,
+      },
+    });
 
-  const mailOptions = {
-    from: emailSender,
-    to: emailReciver,
-    subject: `Excel de usuarios de la promoción: ${database}.`,
-    text: `
-    Hola, buenas.
-    Adjunto encontrarás el archivo Excel con la información de los usuarios inscritos en la promoción de ${promotion}.
-    Muchas gracias.
-    Un saludo.
-    `,
-    attachments: [{ filename: "users.xlsx", content: Buffer.from(excelBuffer) }],
-  };
+    const mailOptions = {
+      from: emailSender,
+      to: emailReciver,
+      subject: `Excel de usuarios de la promoción: ${database}.`,
+      text: `
+      Hola, buenas.
+      Adjunto encontrarás el archivo Excel con la información de los usuarios inscritos en la promoción de ${promotion}.
+      Muchas gracias.
+      Un saludo.
+      `,
+      attachments: [{ filename: "users.xlsx", content: Buffer.from(excelBuffer) }],
+    };
 
-  transporter.sendMail(mailOptions, (error: any, info: { response: any }) => {
-    if (error) {
-      throw new CustomError(`Error al enviar el correo ${error.error}`, 400);
-    }
-    console.log(`Correo electrónico enviado a: ${emailReciver} con fecha: ${actualDateParsed}`);
-  });
+    transporter.sendMail(mailOptions, (error: any, info: { response: any }) => {
+      if (error) {
+        throw new CustomError(`Error al enviar el correo ${error.error}`, 400);
+      }
+      console.log(`Correo electrónico enviado a: ${emailReciver} con fecha: ${actualDateParsed}`);
+    });
+  } catch (error) {
+    throw new CustomError("Error al crear el correo", 500);
+  }
 };
 
 export const mailDto = {

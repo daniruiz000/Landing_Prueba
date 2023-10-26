@@ -1,10 +1,7 @@
 import ExcelJS from "exceljs";
-import dotenv from "dotenv";
+import moment from "moment-timezone";
 import { userDto } from "./user.dto";
 import { CustomError } from "../../server/checkErrorRequest.middleware";
-import moment from "moment-timezone";
-
-dotenv.config();
 
 const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
   try {
