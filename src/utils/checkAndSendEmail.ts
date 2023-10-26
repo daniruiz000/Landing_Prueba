@@ -26,7 +26,7 @@ export const checkAndSendEmail = async (): Promise<void> => {
   const isMaxNumberOfUsers = maxUsersLimit && numberOfUsers >= maxUsersLimit;
 
   if (isAfterFinishDate || isMaxNumberOfUsers) {
-    console.log("¡Es hora de enviar el correo electrónico!");
+    console.log("Ha finalizado la promoción.¡Es hora de enviar el correo electrónico!");
     const workbook = await excelDto.createExcelWithUsers();
     await mailDto.sendExcelByEmail(workbook);
     isMailSent = true;
