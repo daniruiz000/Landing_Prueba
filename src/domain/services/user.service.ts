@@ -7,10 +7,7 @@ const createUser = async (req: any, res: Response, next: NextFunction): Promise<
     const userDataInsert = req.body;
     const foto = req.files.foto ? req.files.foto[0].buffer.toString("base64") : null;
 
-    promotionDto.verifyIsPromotionActive();
-    await promotionDto.verifyLimitOfUsers();
-
-    userDto.verifyValidProperties(userDataInsert);
+    await promotionDto.verifyIsPromotionActive();
     const userDataValidated = await userDto.verifyInsertData(userDataInsert);
 
     await userDto.createUser(userDataValidated, foto);

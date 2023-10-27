@@ -12,19 +12,20 @@ const finishDate = process.env.PROMOTION_FINISH_DATE as string;
 const finishDateParsed = moment.tz(finishDate, "YYYY-MM-DD HH:mm:ss", timezone) || undefined;
 const formatDate = process.env.FORMAT_DATE_MOMENT as string;
 
-export const verifyIsPromotionActive = (): void => {
+export const verifyIsPromotionActive = async (): Promise<void> => {
   const isBeforeStartDate = isPromotionOpened();
-  const isAfterFinishDate = isPromotionClosed();
-
   if (isBeforeStartDate) {
     const formattedStartDate = startDateParsed.format(formatDate);
     throw new CustomError(`Todavía no se pueden añadir usuarios hasta ${formattedStartDate}.`, 400);
   }
 
+  const isAfterFinishDate = isPromotionClosed();
   if (isAfterFinishDate) {
     const formattedFinishDate = finishDateParsed.format(formatDate);
     throw new CustomError(`Se ha alcanzado la fecha de finalización ${formattedFinishDate}, no se pueden añadir más usuarios`, 400);
   }
+
+  await verifyLimitOfUsers();
 };
 
 export const verifyLimitOfUsers = async (): Promise<void> => {

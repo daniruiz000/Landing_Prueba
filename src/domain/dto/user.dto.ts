@@ -31,6 +31,8 @@ const getAllUser = async (): Promise<User[]> => {
 };
 
 const verifyInsertData = async (userData: User): Promise<User> => {
+  verifyValidProperties(userData);
+
   const userToValidate = new User();
   Object.assign(userToValidate, userData);
 
@@ -53,13 +55,15 @@ const verifyInsertData = async (userData: User): Promise<User> => {
   if (userToValidate.telefono && !userToValidate.validatePhoneNumber()) {
     throw new CustomError("El número de teléfono proporcionado no cumple con los requisitos", 400);
   }
+
   return userToValidate;
 };
 
 export const verifyValidProperties = (userData: any): void => {
   const invalidProperties = Object.keys(userData).filter((property) => !validUserPropertiesUser.includes(property));
+  const isInvalidProperties = invalidProperties.length > 0;
 
-  if (invalidProperties.length > 0) {
+  if (isInvalidProperties) {
     throw new CustomError(`Actualización de usuario cancelada. Propiedades no válidas: ${invalidProperties.join(", ")}`, 400);
   }
 };
