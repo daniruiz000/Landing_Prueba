@@ -9,6 +9,8 @@ import { CustomError } from "../../server/checkErrorRequest.middleware";
 dotenv.config();
 
 const promotion = process.env.PROMOCION_NAME as string;
+const timezone = process.env.TIME_ZONE as string;
+const formatDate = process.env.FORMAT_DATE_MOMENT as string;
 
 const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
   try {
@@ -50,7 +52,7 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
         segundo_apellido: user.segundo_apellido.toUpperCase(),
         telefono: user.telefono.toUpperCase(),
         email: user.email.toLocaleLowerCase(),
-        createdAt: moment.tz(user.createdAt, "Europe/Madrid").format("DD/MM/YYYY - HH:mm:ss"),
+        createdAt: moment.tz(user.createdAt, timezone).format(formatDate),
         foto: user.foto ? "Imagen" : "No hay foto",
       });
 

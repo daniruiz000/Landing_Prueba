@@ -1,27 +1,28 @@
-import moment from "moment";
+import moment from "moment-timezone";
 import { CustomError } from "../../server/checkErrorRequest.middleware";
 import { isPromotionOpened, isPromotionClosed, isMaxNumOfUsers } from "../../utils/promotionUtils";
 
 const authEmail: string = process.env.AUTH_EMAIL as string;
 const authPassword: string = process.env.AUTH_PASSWORD as string;
-const spainTimezone = "Europe/Madrid";
+const timezone = process.env.TIME_ZONE as string;
 const maxUsersLimit = parseInt(process.env.PROMOTION_MAX_USERS_LIMIT as string) || undefined;
 const startDate = process.env.PROMOTION_START_DATE as string;
-const startDateParsed = moment.tz(startDate, "YYYY-MM-DD HH:mm:ss", spainTimezone) || undefined;
+const startDateParsed = moment.tz(startDate, "YYYY-MM-DD HH:mm:ss", timezone) || undefined;
 const finishDate = process.env.PROMOTION_FINISH_DATE as string;
-const finishDateParsed = moment.tz(finishDate, "YYYY-MM-DD HH:mm:ss", spainTimezone) || undefined;
+const finishDateParsed = moment.tz(finishDate, "YYYY-MM-DD HH:mm:ss", timezone) || undefined;
+const formatDate = process.env.FORMAT_DATE_MOMENT as string;
 
 export const verifyIsPromotionActive = (): void => {
   const isBeforeStartDate = isPromotionOpened();
   const isAfterFinishDate = isPromotionClosed();
 
   if (isBeforeStartDate) {
-    const formattedStartDate = startDateParsed.format("DD/MM/YYYY - HH:mm:ss");
+    const formattedStartDate = startDateParsed.format(formatDate);
     throw new CustomError(`Todavía no se pueden añadir usuarios hasta ${formattedStartDate}.`, 400);
   }
 
   if (isAfterFinishDate) {
-    const formattedFinishDate = finishDateParsed.format("DD/MM/YYYY - HH:mm:ss");
+    const formattedFinishDate = finishDateParsed.format(formatDate);
     throw new CustomError(`Se ha alcanzado la fecha de finalización ${formattedFinishDate}, no se pueden añadir más usuarios`, 400);
   }
 };

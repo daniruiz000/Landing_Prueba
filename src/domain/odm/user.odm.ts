@@ -16,12 +16,6 @@ const getAllUser = async (): Promise<User[]> => {
   return userList;
 };
 
-const getUserById = async (id: number): Promise<User | null> => {
-  const user = await userRepository.findOne({ where: { id } });
-
-  return user;
-};
-
 const saveUser = async (userDataValidated: User, foto: string): Promise<User> => {
   const userNew = new User();
   Object.assign(userNew, userDataValidated);
@@ -32,6 +26,11 @@ const saveUser = async (userDataValidated: User, foto: string): Promise<User> =>
   return userSaved;
 };
 
+const getUserById = async (id: number): Promise<User | null> => {
+  const user = await userRepository.findOne({ where: { id } });
+
+  return user;
+};
 const deleteUser = async (user: User): Promise<User> => {
   const userDeleted = await userRepository.remove(user);
   return userDeleted;
@@ -40,7 +39,7 @@ const deleteUser = async (user: User): Promise<User> => {
 export const userOdm = {
   countUsers,
   getAllUser,
-  getUserById,
   saveUser,
+  getUserById,
   deleteUser,
 };

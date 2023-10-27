@@ -8,23 +8,23 @@ import { excelDto } from "./excel.dto";
 
 dotenv.config();
 
+const emailService = process.env.EMAIL_SERVICE as string;
 const emailSender = process.env.EMAIL_SENDER as string;
 const emailSenderPassword = process.env.EMAIL_SENDER_PASSWORD as string;
 const emailReciver = process.env.EMAIL_RECIVER as string;
 const database = process.env.SQL_DATABASE as string;
 const promotion = process.env.PROMOCION_NAME as string;
-
-const spainTimezone = "Europe/Madrid";
+const timezone = process.env.TIME_ZONE as string;
 
 const sendExcelByEmail = async (workbook: Workbook): Promise<void> => {
   try {
-    const actualDate = moment.tz(spainTimezone);
+    const actualDate = moment.tz(timezone);
     const actualDateParsed = actualDate.toLocaleString();
 
     const excelBuffer = await workbook.xlsx.writeBuffer();
 
     const transporter = nodemailer.createTransport({
-      service: "Gmail",
+      service: emailService,
       auth: {
         user: emailSender,
         pass: emailSenderPassword,
