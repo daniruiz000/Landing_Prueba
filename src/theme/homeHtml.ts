@@ -1,6 +1,6 @@
 const promotion = process.env.PROMOCION_NAME as string;
 
-export const pageStyles = `
+export const homePageStyles = `
         <style>
           body {
             font-family: Arial, sans-serif;
@@ -39,7 +39,7 @@ export const pageStyles = `
         </style>
       `;
 
-export const pageContent = `
+export const homePageContent = `
       <div>
         <h3>BIENVENIDO AL SERVIDOR DE ${promotion}.</h3>
         <p>Necesita logarse para poder tener acceso a los servicios de administrador.</p>

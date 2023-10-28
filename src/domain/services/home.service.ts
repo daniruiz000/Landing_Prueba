@@ -3,7 +3,7 @@ import * as fs from "fs";
 import path from "path";
 
 import { generateToken } from "../../utils/token";
-import { pageContent, pageStyles } from "../../theme/homeHtml";
+import { homePageContent, homePageStyles } from "../../theme/homeHtml";
 
 import { excelDto } from "../dto/excel.dto";
 import { promotionDto } from "../dto/promotionDto";
@@ -12,7 +12,7 @@ const SQL_DATABASE: string = process.env.SQL_DATABASE as string;
 
 const showHomePage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    res.send(`<html><head>${pageStyles}</head><body>${pageContent}</body></html>`);
+    res.send(`<html><head>${homePageStyles}</head><body>${homePageContent}</body></html>`);
   } catch (error) {
     next(error);
   }
