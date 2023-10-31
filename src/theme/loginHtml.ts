@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <title>Inicio de Sesión</title>
-  <style>
+export const loginPageStyles = `
+<title>Inicio de Sesión</title>
+<style>
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
@@ -69,9 +67,10 @@
       margin: 20px auto;
     }
   </style>
-</head>
-<body>
-  <div class="container">
+`;
+
+export const loginPageContent = `
+<div class="container">
     <h1>Login</h1>
     <p class="login-text">Ingresa tus credenciales para iniciar sesión:</p>
     <form id="loginForm" action="/do-login" method="post">
@@ -88,7 +87,10 @@
     <button id="generateExcelButton" class="generate-excel-button" style="display: none">Generar Excel</button>
     <button id="logoutButton" class="logout-button" style="display: none">Cerrar Sesión</button>
   </div>
-  <script>
+`;
+
+export const loginPageScripts = `
+<script>
     const loginForm = document.getElementById("loginForm");
     const generateExcelButton = document.getElementById("generateExcelButton");
     const errorMessage = document.getElementById("error-message");
@@ -122,7 +124,7 @@
           errorMessage.style.display = "none"; // Ocultar el mensaje de error si estaba visible
           // Mostrar el mensaje de bienvenida y los botones
           welcomeMessage.style.display = "block";
-          welcomeMessage.textContent = `¡Bienvenido ${email}!`;
+          welcomeMessage.textContent = "¡Bienvenido " + email;
           logoutButton.style.display = "block";
           generateExcelButton.style.display = "block";
           // Limpiar campos de entrada de texto
@@ -155,7 +157,7 @@
         const response = await fetch("/get-xlsx-database", {
           method: "GET",
           headers: {
-            "Authorization": `Bearer ${token}`, // Envía el token en la cabecera
+            "Authorization": "Bearer " + token, // Envía el token en la cabecera
           },
         });
 
@@ -205,5 +207,4 @@
       logoutButton.style.display = "none";
     });
   </script>
-</body>
-</html>
+`;

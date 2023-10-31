@@ -7,6 +7,7 @@ import { homePageContent, homePageStyles } from "../../theme/homeHtml";
 
 import { excelDto } from "../dto/excel.dto";
 import { promotionDto } from "../dto/promotionDto";
+import { loginPageStyles, loginPageContent, loginPageScripts } from "../../theme/loginHtml";
 
 const SQL_DATABASE: string = process.env.SQL_DATABASE as string;
 
@@ -20,7 +21,7 @@ const showHomePage = async (req: Request, res: Response, next: NextFunction): Pr
 
 const showLoginPage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    res.sendFile(path.join(__dirname, "../../../public/login.html"));
+    res.send(`<html><head>${loginPageStyles}</head><body>${loginPageContent}${loginPageScripts}</body></html>`);
   } catch (error) {
     next(error);
   }
