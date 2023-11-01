@@ -3,7 +3,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import { configureRoutes } from "../routes/index";
-import { checkError } from "./checkErrorRequest.middleware";
 
 dotenv.config();
 
@@ -18,7 +17,5 @@ app.use(
     origin: CORS_PORT_ORIGIN,
   })
 );
-
-app.use(checkError);
 
 configureRoutes(app);
