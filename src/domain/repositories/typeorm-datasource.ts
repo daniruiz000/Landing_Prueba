@@ -21,5 +21,5 @@ export const AppDataSource = new DataSource({
   database: SQL_DATABASE, // Nombre de la base de datos
   synchronize: true, // Esto sincronizará automáticamente las entidades con la base de datos (solo para desarrollo, no se recomienda en producción)
   logging: false, // Puedes habilitar el registro de consultas si lo deseas
-  entities: [User], // Lista de entidades que quieres utilizar
+  entities: [User],
 });
