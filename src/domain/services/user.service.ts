@@ -1,11 +1,12 @@
 import { type Response, type NextFunction } from "express";
+import { type CustomRequest } from "../../server/auth.middleware";
 import { userDto } from "../dto/user.dto";
 import { promotionDto } from "../dto/promotionDto";
 
-const createUser = async (req: any, res: Response, next: NextFunction): Promise<void> => {
+const createUser = async (req: CustomRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
     const userDataInsert = req.body;
-    const foto = req.files.foto ? req.files.foto[0].buffer.toString("base64") : null;
+    const foto = userDataInsert.files.foto ? userDataInsert.files.foto[0].buffer.toString("base64") : null;
 
     await promotionDto.verifyIsPromotionActive();
     const userDataValidated = await userDto.verifyInsertData(userDataInsert);

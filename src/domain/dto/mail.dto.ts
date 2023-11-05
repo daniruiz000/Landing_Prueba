@@ -44,9 +44,9 @@ const sendExcelByEmail = async (workbook: Workbook): Promise<void> => {
       attachments: [{ filename: `usuarios-${promotion}.xlsx`, content: Buffer.from(excelBuffer) }],
     };
 
-    transporter.sendMail(mailOptions, (error: any, info: { response: any }) => {
+    transporter.sendMail(mailOptions, (error: Error | null) => {
       if (error) {
-        throw new CustomError(`Error al enviar el correo ${error.error}`, 400);
+        throw new CustomError("Error al enviar el correo", 400);
       }
       console.log(`Correo electrónico enviado a: ${emailReciver} con fecha: ${actualDateParsed}`);
     });

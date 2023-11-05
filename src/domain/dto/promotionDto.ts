@@ -1,6 +1,7 @@
 import moment from "moment-timezone";
 import { CustomError } from "../../server/checkErrorRequest.middleware";
 import { isPromotionOpened, isPromotionClosed, isMaxNumOfUsers } from "../../utils/promotionUtils";
+import { type CustomRequest } from "../../server/auth.middleware";
 
 const authEmail: string = process.env.AUTH_EMAIL as string;
 const authPassword: string = process.env.AUTH_PASSWORD as string;
@@ -38,7 +39,7 @@ export const verifyLimitOfUsers = async (): Promise<void> => {
   }
 };
 
-export const verifyValidCredentials = (req: any): void => {
+export const verifyValidCredentials = (req: CustomRequest): void => {
   if (req.email !== authEmail || req.password !== authPassword) {
     throw new CustomError("No estás autorizado a realizar esta acción.", 403);
   }
