@@ -68,53 +68,10 @@ export const verifyValidProperties = (userData: any): void => {
   }
 };
 
-const getUserById = async (id: number): Promise<User> => {
-  const user = await userOdm.getUserById(id);
-  if (!user) {
-    throw new CustomError("El usuario no ha sido encontrado", 404);
-  }
-
-  return user;
-};
-
-const updateUser = async (userData: any, idReceivedInParams: number, foto: any): Promise<User> => {
-  const userToUpdate = await userDto.getUserById(idReceivedInParams);
-  if (!userToUpdate) {
-    throw new CustomError("Usuario no encontrado", 404);
-  }
-
-  const invalidProperties = Object.keys(userData).filter((property) => !validUserPropertiesUser.includes(property));
-  if (invalidProperties.length > 0) {
-    throw new CustomError(`Actualización de usuario cancelada. Propiedades no válidas: ${invalidProperties.join(", ")}`, 400);
-  }
-
-  Object.assign(userToUpdate, userData);
-
-  const userUpdated = await userOdm.saveUser(userToUpdate, foto);
-  if (!userUpdated) {
-    throw new CustomError("Los usuarios no han sido encontrados", 404);
-  }
-
-  return userUpdated;
-};
-
-const deleteUserById = async (id: number): Promise<User> => {
-  const userToDelete = await userDto.getUserById(id);
-  const userDeleted = await userOdm.deleteUser(userToDelete);
-  if (!userDeleted) {
-    throw new CustomError("Usuario no borrado", 403);
-  }
-
-  return userDeleted;
-};
-
 export const userDto = {
   countUsers,
   createUser,
   verifyInsertData,
   verifyValidProperties,
   getAllUser,
-  getUserById,
-  updateUser,
-  deleteUserById,
 };
