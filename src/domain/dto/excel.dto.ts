@@ -23,8 +23,9 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
       { header: "Apellido", key: "apellido", width: 20 },
       { header: "Segundo Apellido", key: "segundo_apellido", width: 20 },
       { header: "Teléfono", key: "telefono", width: 20 },
-      { header: "Email", key: "email", width: 30 },
-      { header: "Fecha de Inscripción", key: "createdAt", width: 40 },
+      { header: "Email", key: "email", width: 25 },
+      { header: "DNI/NIE", key: "dni_nie", width: 20 },
+      { header: "Fecha de Inscripción", key: "createdAt", width: 20 },
       { header: "Foto", key: "foto", width: 13.5 },
     ];
 
@@ -54,6 +55,7 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
         email: user.email.toLocaleLowerCase(),
         createdAt: moment.tz(user.createdAt, timezone).format(formatDate),
         foto: user.foto ? "Imagen" : "No hay foto",
+        dni_nie: user.dni ? user.dni.toUpperCase() : user.nie.toUpperCase(),
       });
 
       if (user.foto) {
@@ -63,7 +65,7 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
         });
 
         worksheet.addImage(imgId, {
-          tl: { col: 6, row: currentRow - 1 },
+          tl: { col: 7, row: currentRow - 1 },
           ext: { width: 100, height: 100 },
         });
 

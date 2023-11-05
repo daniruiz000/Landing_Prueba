@@ -13,6 +13,6 @@
     "emitDecoratorMetadata": true,
     "strictPropertyInitialization": false
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", ".eslintrc.js"],
   "exclude": ["**/*.spec.ts", "dist/*", "private/**/*"]
 }

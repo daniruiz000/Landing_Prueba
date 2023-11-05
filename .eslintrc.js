@@ -8,9 +8,9 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
-    project: ["./tsconfig.json"],
+    project: ["tsconfig.json"],
   },
-  ignorePatterns: ["dist/*"],
+  ignorePatterns: ["dist/*", "tsconfig.json"],
   rules: {
     "semi": "off",
     "space-before-function-paren": "off",

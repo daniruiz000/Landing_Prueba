@@ -36,35 +36,62 @@ const verifyInsertData = async (userData: User): Promise<User> => {
   const userToValidate = new User();
   Object.assign(userToValidate, userData);
 
-  if (userToValidate.nombre && !userToValidate.validateNombre()) {
+  if (!userToValidate.nombre || !userToValidate.validateNombre()) {
     throw new CustomError("El nombre proporcionado no cumple con los requisitos", 400);
   }
 
-  if (userToValidate.apellido && !userToValidate.validateApellido()) {
+  if (!userToValidate.apellido || !userToValidate.validateApellido()) {
     throw new CustomError("El apellido proporcionado no cumple con los requisitos", 400);
   }
 
-  if (userToValidate.segundo_apellido && !userToValidate.validateSegundoApellido()) {
+  if (!userToValidate.segundo_apellido || !userToValidate.validateSegundoApellido()) {
     throw new CustomError("El segundo apellido proporcionado no cumple con los requisitos", 400);
   }
 
-  if (userToValidate.email && !userToValidate.validateEmail()) {
+  if (!userToValidate.email || !userToValidate.validateEmail()) {
     throw new CustomError("El correo electrónico proporcionado no cumple con los requisitos", 400);
   }
 
-  if (userToValidate.telefono && !userToValidate.validatePhoneNumber()) {
+  if (!userToValidate.telefono || !userToValidate.validatePhoneNumber()) {
     throw new CustomError("El número de teléfono proporcionado no cumple con los requisitos", 400);
+  }
+
+  if (userToValidate.dni) {
+    if (!userToValidate.validateDNI()) {
+      throw new CustomError("El número de DNI proporcionado no cumple con los requisitos", 400);
+    }
+  }
+
+  if (userToValidate.nie) {
+    if (!userToValidate.validateNIE()) {
+      throw new CustomError("El número de NIE proporcionado no cumple con los requisitos", 400);
+    }
   }
 
   return userToValidate;
 };
 
 export const verifyValidProperties = (userData: any): void => {
-  const invalidProperties = Object.keys(userData).filter((property) => !validUserPropertiesUser.includes(property));
-  const isInvalidProperties = invalidProperties.length > 0;
+  const validProperties = validUserPropertiesUser;
+  const requiredProperties = validProperties.filter((property) => property !== "dni" && property !== "nie");
 
-  if (isInvalidProperties) {
-    throw new CustomError(`Actualización de usuario cancelada. Propiedades no válidas: ${invalidProperties.join(", ")}`, 400);
+  const missingRequiredProperties = requiredProperties.filter((property) => !(property in userData));
+
+  if (!userData.dni && !userData.nie) {
+    throw new CustomError("Debes proporcionar el DNI o el NIE.", 400);
+  }
+
+  const invalidProperties = Object.keys(userData).filter((property) => !validProperties.includes(property));
+
+  if (missingRequiredProperties.length > 0 || invalidProperties.length > 0) {
+    const errorMessages = [];
+    if (missingRequiredProperties.length > 0) {
+      errorMessages.push(`Propiedades requeridas faltantes: ${missingRequiredProperties.join(", ")}`);
+    }
+    if (invalidProperties.length > 0) {
+      errorMessages.push(`Propiedades no válidas: ${invalidProperties.join(", ")}`);
+    }
+    throw new CustomError(`Actualización de usuario cancelada. ${errorMessages.join(". ")}`, 400);
   }
 };
 
