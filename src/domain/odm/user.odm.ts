@@ -26,20 +26,8 @@ const saveUser = async (userDataValidated: User, foto: string): Promise<User> =>
   return userSaved;
 };
 
-const getUserById = async (id: number): Promise<User | null> => {
-  const user = await userRepository.findOne({ where: { id } });
-
-  return user;
-};
-const deleteUser = async (user: User): Promise<User> => {
-  const userDeleted = await userRepository.remove(user);
-  return userDeleted;
-};
-
 export const userOdm = {
   countUsers,
   getAllUser,
   saveUser,
-  getUserById,
-  deleteUser,
 };
