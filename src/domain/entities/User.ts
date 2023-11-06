@@ -78,7 +78,6 @@ export class User {
     const letterIndex = dniNumber % 23;
     const calculatedLetter = User.authLetters.charAt(letterIndex);
     const providedLetter = rawDNI.charAt(8).toUpperCase();
-    console.log(providedLetter);
 
     if (calculatedLetter !== providedLetter) {
       throw new CustomError("Letra del DNI incorrecta.", 400);
