@@ -19,7 +19,7 @@ export const AppDataSource = new DataSource({
   username: SQL_USER, // Nombre de usuario de la base de datos
   password: SQL_PASSWORD, // Contraseña de la base de datos
   database: SQL_DATABASE, // Nombre de la base de datos
-  synchronize: true, // Esto sincronizará automáticamente las entidades con la base de datos (solo para desarrollo, no se recomienda en producción)
+  synchronize: false, // Esto sincronizará automáticamente las entidades con la base de datos (solo para desarrollo, no se recomienda en producción)
   logging: false, // Puedes habilitar el registro de consultas si lo deseas
   entities: [User],
 });
