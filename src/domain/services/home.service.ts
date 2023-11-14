@@ -39,7 +39,7 @@ const doLogin = async (req: Request, res: Response, next: NextFunction): Promise
   }
 };
 
-const generateExcelAndSendToDownload = async (req: any, res: Response, next: NextFunction): Promise<void> => {
+const generateExcelAndSendToDownload = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     promotionDto.verifyValidCredentials(req);
     const workbook = await excelDto.createExcelWithUsers();

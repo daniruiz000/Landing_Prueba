@@ -18,6 +18,8 @@ module.exports = {
     "quote-props": [2, "consistent"],
     "multiline-ternary": "off",
     "comma-dangle": "off",
+
+    "@typescript-eslint/indent": ["error", 2],
     "@typescript-eslint/quotes": [2, "double"],
     "@typescript-eslint/semi": "off",
     "@typescript-eslint/space-before-function-paren": "off",

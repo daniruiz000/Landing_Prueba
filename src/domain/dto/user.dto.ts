@@ -12,7 +12,7 @@ const countUsers = async (): Promise<number> => {
   return userCount;
 };
 
-const createUser = async (userDataValidated: User, foto: any): Promise<User> => {
+const createUser = async (userDataValidated: User, foto: string): Promise<User> => {
   const newUser = await userOdm.saveUser(userDataValidated, foto);
   if (!newUser) {
     throw new CustomError("El usuario no ha sido registrado", 400);

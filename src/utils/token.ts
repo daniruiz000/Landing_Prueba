@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, { type JwtPayload } from "jsonwebtoken";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -19,10 +19,10 @@ export const generateToken = (email: string, password: string): string => {
   return token;
 };
 
-export const verifyToken = (token: string): any => {
+export const verifyToken = (token: string): jwt.JwtPayload => {
   if (!token) {
     throw new Error("Token is missing");
   }
   const result = jwt.verify(token, JWT_SECRET);
-  return result;
+  return result as JwtPayload;
 };

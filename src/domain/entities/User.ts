@@ -34,7 +34,6 @@ export class User {
   @Column({ type: "longtext", nullable: true })
   foto: string;
 
-  // Expresiones regulares
   private static readonly nameRegex = /^[A-Za-zÁ-ÿ\s]{3,19}$/;
   private static readonly phoneRegex = /^(34|\+34|0034)?[6789]\d{8}$/;
   private static readonly emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -43,7 +42,6 @@ export class User {
   private static readonly nieMap: Record<string, number> = { X: 0, Y: 1, Z: 2 };
   private static readonly authLetters = "TRWAGMYFPDXBNJZSQVHLCKE";
 
-  // Función de validación genérica para nombres
   private static validateName(name: string): boolean {
     return this.nameRegex.test(name.trim());
   }

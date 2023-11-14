@@ -1,10 +1,10 @@
 {
-  "singleQuote": false,
-  "tabWidth": 2,
-  "arrowParens": "always",
-  "proseWrap": "never",
-  "singleAttributePerLine": false,
-  "quoteProps": "consistent",
-  "semi": true,
-  "printWidth": 140
+    "singleQuote": false,
+    "tabWidth": 2,
+    "arrowParens": "always",
+    "proseWrap": "never",
+    "singleAttributePerLine": false,
+    "quoteProps": "consistent",
+    "semi": true,
+    "printWidth": 140
 }

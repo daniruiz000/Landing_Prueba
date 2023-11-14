@@ -5,7 +5,7 @@ import { promotionDto } from "../dto/promotionDto";
 const createUser = async (req: any, res: Response, next: NextFunction): Promise<void> => {
   try {
     const userDataInsert = req.body;
-    const foto = req.files.foto ? req.files.foto[0].buffer.toString("base64") : null;
+    const foto = req.files?.foto ? req.files.foto[0].buffer.toString("base64") : null;
 
     await promotionDto.verifyIsPromotionActive();
     const userDataValidated = await userDto.verifyInsertData(userDataInsert);
