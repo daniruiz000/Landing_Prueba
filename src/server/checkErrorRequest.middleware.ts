@@ -1,4 +1,5 @@
 import { type Request, type Response, type NextFunction } from "express";
+import winston from "winston";
 
 export class CustomError extends Error {
   statusCode: number;
@@ -8,8 +9,14 @@ export class CustomError extends Error {
   }
 }
 
+const logger = winston.createLogger({
+  level: "error",
+  format: winston.format.combine(winston.format.timestamp(), winston.format.simple(), winston.format.json()),
+  transports: [new winston.transports.Console(), new winston.transports.File({ filename: "error.log" })],
+});
+
 export const checkError = (err: CustomError, req: Request, res: Response, next: NextFunction): void => {
-  console.error("Error:", err.message);
+  logger.error(`Error: ${err.message}`);
   if ("code" in err) {
     const errorCode = err.code;
     switch (errorCode) {

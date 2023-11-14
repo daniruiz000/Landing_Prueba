@@ -40,7 +40,8 @@
     "mysql2": "^3.6.3",
     "nodemailer": "^6.9.7",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.3.17"
+    "typeorm": "^0.3.17",
+    "winston": "^3.11.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.16",
