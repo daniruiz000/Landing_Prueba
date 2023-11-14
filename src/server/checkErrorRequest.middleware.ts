@@ -8,31 +8,33 @@ export class CustomError extends Error {
   }
 }
 
-const handleDuplicateError = (err: any, res: Response): boolean => {
-  if ("sqlMessage" in err) {
-    res.status(409).json({ error: "Usuario ya registrado con alguno de estos datos." });
-    return true;
-  }
-  return false;
-};
-
-export const checkError = (err: any, req: Request, res: Response, next: NextFunction): void => {
+export const checkError = (err: CustomError, req: Request, res: Response, next: NextFunction): void => {
   console.error("Error:", err.message);
-
   if ("code" in err) {
     const errorCode = err.code;
     switch (errorCode) {
       case "ER_DUP_ENTRY":
-        if (handleDuplicateError(err, res)) {
-          return;
-        }
-        break;
+        res.status(409).json({ error: "Usuario ya registrado con alguno de estos datos." });
+        return;
+
       case "ENOENT":
         res.status(404).json({ error: "Recurso no encontrado" });
         return;
+
+      case "ER_BAD_DB_ERROR":
+        res.status(500).json({ error: "Error interno del servidor - Base de datos no encontrada" });
+        return;
+
       default:
-        break;
+        res.status(500).json({ error: "Error interno del servidor" });
+        return;
     }
   }
-  res.status(err.statusCode).json({ error: err.message });
+
+  if (err.name === "EntityMetadataNotFoundError") {
+    res.status(500).json({ error: "Error de tiempo de espera al conectar a la base de datos" });
+    return;
+  }
+
+  res.status(err.statusCode || 500).json({ error: err.message || "Error interno del servidor" });
 };
