@@ -8,6 +8,7 @@ import { homePageContent, homePageStyles } from "../../theme/homeHtml";
 import { excelDto } from "../dto/excel.dto";
 import { promotionDto } from "../dto/promotionDto";
 import { loginPageStyles, loginPageContent, loginPageScripts } from "../../theme/loginHtml";
+import { type CustomRequest } from "../../server/auth.middleware";
 
 const SQL_DATABASE: string = process.env.SQL_DATABASE as string;
 
@@ -27,7 +28,7 @@ const showLoginPage = async (req: Request, res: Response, next: NextFunction): P
   }
 };
 
-const doLogin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const doLogin = async (req: CustomRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
     promotionDto.verifyValidCredentials(req.body);
     const { email, password } = req.body;
@@ -39,7 +40,7 @@ const doLogin = async (req: Request, res: Response, next: NextFunction): Promise
   }
 };
 
-const generateExcelAndSendToDownload = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const generateExcelAndSendToDownload = async (req: CustomRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
     promotionDto.verifyValidCredentials(req);
     const workbook = await excelDto.createExcelWithUsers();

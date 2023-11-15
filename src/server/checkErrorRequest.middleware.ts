@@ -11,7 +11,7 @@ export class CustomError extends Error {
 
 const logger = winston.createLogger({
   level: "error",
-  format: winston.format.combine(winston.format.timestamp(), winston.format.simple(), winston.format.json()),
+  format: winston.format.combine(winston.format.timestamp(), winston.format.simple(), winston.format.json(), winston.format.prettyPrint()),
   transports: [new winston.transports.Console(), new winston.transports.File({ filename: "error.log" })],
 });
 
