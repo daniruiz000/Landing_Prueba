@@ -55,7 +55,7 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
         email: user.email.toLocaleLowerCase(),
         createdAt: moment.tz(user.createdAt, timezone).format(formatDate),
         foto: user.foto ? "Imagen" : "No hay foto",
-        dni_nie: user.dni ? user.dni.toUpperCase() : user.nie.toUpperCase(),
+        dni_nie: user.dni ? `DNI: ${user.dni.toUpperCase()}` : `NIE: ${user.nie.toUpperCase()}`,
       });
 
       if (user.foto) {
