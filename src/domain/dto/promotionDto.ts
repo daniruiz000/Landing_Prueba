@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
 import moment from "moment-timezone";
 import { CustomError } from "../../server/checkErrorRequest.middleware";
 import { isPromotionOpened, isPromotionClosed, isMaxNumOfUsers } from "../../utils/promotionUtils";

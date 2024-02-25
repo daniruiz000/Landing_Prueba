@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
 import { type Request, type Response, type NextFunction } from "express";
 import moment from "moment";
 import dotenv from "dotenv";

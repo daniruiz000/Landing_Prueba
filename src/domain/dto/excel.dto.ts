@@ -1,16 +1,14 @@
+/* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import ExcelJS from "exceljs";
-import moment from "moment-timezone";
 
 import dotenv from "dotenv";
-
 import { userDto } from "./user.dto";
 import { CustomError } from "../../server/checkErrorRequest.middleware";
 
 dotenv.config();
 
 const promotion = process.env.PROMOCION_NAME as string;
-const timezone = process.env.TIME_ZONE as string;
-const formatDate = process.env.FORMAT_DATE_MOMENT as string;
 
 const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
   try {
@@ -25,7 +23,7 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
       { header: "Teléfono", key: "telefono", width: 20 },
       { header: "Email", key: "email", width: 25 },
       { header: "DNI/NIE", key: "dni_nie", width: 20 },
-      { header: "Fecha de Inscripción", key: "createdAt", width: 20 },
+      { header: "Fecha de Inscripción", key: "fechaInscripcion", width: 20 },
       { header: "Foto", key: "foto", width: 13.5 },
     ];
 
@@ -53,9 +51,9 @@ const createExcelWithUsers = async (): Promise<ExcelJS.Workbook> => {
         segundo_apellido: user.segundo_apellido.toUpperCase(),
         telefono: user.telefono.toUpperCase(),
         email: user.email.toLocaleLowerCase(),
-        createdAt: moment.tz(user.createdAt, timezone).format(formatDate),
         foto: user.foto ? "Imagen" : "No hay foto",
-        dni_nie: user.dni ? `DNI: ${user.dni.toUpperCase()}` : `NIE: ${user.nie.toUpperCase()}`,
+        fechaInscripcion: user?.createdAt?.toLocaleDateString(),
+        dni_nie: user.dni ? `DNI: ${user.dni.toUpperCase()}` : user.nie ? `NIE: ${user.nie.toUpperCase()}` : "No hay identificación",
       });
 
       if (user.foto) {

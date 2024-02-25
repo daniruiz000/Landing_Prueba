@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
 import nodemailer from "nodemailer";
 import moment from "moment-timezone";
 import dotenv from "dotenv";

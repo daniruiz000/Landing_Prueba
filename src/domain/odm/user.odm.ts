@@ -1,27 +1,22 @@
-import { type Repository } from "typeorm";
-import { User } from "../entities/User";
-import { AppDataSource } from "../repositories/typeorm-datasource";
-
-const userRepository: Repository<User> = AppDataSource.getRepository(User);
+import { type IUser, User } from "../entities/User";
 
 const countUsers = async (): Promise<number> => {
-  const userCount = await userRepository.count();
+  const userCount = await User.countDocuments();
 
   return userCount;
 };
 
-const getAllUser = async (): Promise<User[]> => {
-  const userList = await userRepository.find();
-
+const getAllUser = async (): Promise<IUser[]> => {
+  const userList = await User.find();
   return userList;
 };
 
-const saveUser = async (userDataValidated: User, foto: string): Promise<User> => {
+const saveUser = async (userDataValidated: IUser, foto: string): Promise<IUser> => {
   const userNew = new User();
   Object.assign(userNew, userDataValidated);
   userNew.foto = foto;
 
-  const userSaved = await userRepository.save(userNew);
+  const userSaved = await User.create(userNew);
 
   return userSaved;
 };

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
 const promotion = process.env.PROMOCION_NAME as string;
 
 export const homePageStyles = `

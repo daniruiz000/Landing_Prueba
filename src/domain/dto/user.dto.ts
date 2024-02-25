@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { CustomError } from "../../server/checkErrorRequest.middleware";
-import { User, validUserPropertiesUser } from "../entities/User";
-
+import { type IUser, User, validUserPropertiesUser } from "../entities/User";
 import { userOdm } from "../odm/user.odm";
 
-const countUsers = async (): Promise<number> => {
+export const countUsers = async (): Promise<number> => {
   const userCount = await userOdm.countUsers();
   if (userCount === null) {
     throw new CustomError("No se pudieron leer los usuarios", 400);
@@ -12,7 +12,7 @@ const countUsers = async (): Promise<number> => {
   return userCount;
 };
 
-const createUser = async (userDataValidated: User, foto: string): Promise<User> => {
+export const createUser = async (userDataValidated: IUser, foto: string): Promise<IUser> => {
   const newUser = await userOdm.saveUser(userDataValidated, foto);
   if (!newUser) {
     throw new CustomError("El usuario no ha sido registrado", 400);
@@ -21,7 +21,7 @@ const createUser = async (userDataValidated: User, foto: string): Promise<User> 
   return newUser;
 };
 
-const getAllUser = async (): Promise<User[]> => {
+export const getAllUser = async (): Promise<IUser[]> => {
   const userList = await userOdm.getAllUser();
   if (!userList) {
     throw new CustomError("Los usuarios no han sido encontrados", 404);
@@ -30,42 +30,30 @@ const getAllUser = async (): Promise<User[]> => {
   return userList;
 };
 
-const verifyInsertData = async (userData: User): Promise<User> => {
+export const verifyInsertData = async (userData: IUser): Promise<IUser> => {
   verifyValidProperties(userData);
 
   const userToValidate = new User();
   Object.assign(userToValidate, userData);
 
-  if (!userToValidate.nombre || !userToValidate.validateNombre()) {
+  if (!userToValidate.nombre) {
     throw new CustomError("El nombre proporcionado no cumple con los requisitos", 400);
   }
 
-  if (!userToValidate.apellido || !userToValidate.validateApellido()) {
+  if (!userToValidate.apellido) {
     throw new CustomError("El apellido proporcionado no cumple con los requisitos", 400);
   }
 
-  if (!userToValidate.segundo_apellido || !userToValidate.validateSegundoApellido()) {
+  if (!userToValidate.segundo_apellido) {
     throw new CustomError("El segundo apellido proporcionado no cumple con los requisitos", 400);
   }
 
-  if (!userToValidate.email || !userToValidate.validateEmail()) {
+  if (!userToValidate.email) {
     throw new CustomError("El correo electrónico proporcionado no cumple con los requisitos", 400);
   }
 
-  if (!userToValidate.telefono || !userToValidate.validatePhoneNumber()) {
+  if (!userToValidate.telefono) {
     throw new CustomError("El número de teléfono proporcionado no cumple con los requisitos", 400);
-  }
-
-  if (userToValidate.dni) {
-    if (!userToValidate.validateDNI()) {
-      throw new CustomError("El número de DNI proporcionado no cumple con los requisitos", 400);
-    }
-  }
-
-  if (userToValidate.nie) {
-    if (!userToValidate.validateNIE()) {
-      throw new CustomError("El número de NIE proporcionado no cumple con los requisitos", 400);
-    }
   }
 
   return userToValidate;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { type Response, type NextFunction } from "express";
 import { userDto } from "../dto/user.dto";
 import { promotionDto } from "../dto/promotionDto";

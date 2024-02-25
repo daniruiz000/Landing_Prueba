@@ -1,5 +1,4 @@
 import { type Request, type Response, type NextFunction } from "express";
-import winston from "winston";
 
 export class CustomError extends Error {
   statusCode: number;
@@ -9,39 +8,39 @@ export class CustomError extends Error {
   }
 }
 
-const logger = winston.createLogger({
-  level: "error",
-  format: winston.format.combine(winston.format.timestamp(), winston.format.simple(), winston.format.json(), winston.format.prettyPrint()),
-  transports: [new winston.transports.Console(), new winston.transports.File({ filename: "error.log" })],
-});
-
 export const checkError = (err: CustomError, req: Request, res: Response, next: NextFunction): void => {
-  logger.error(`Error: ${err.message}`);
   if ("code" in err) {
     const errorCode = err.code;
-    switch (errorCode) {
-      case "ER_DUP_ENTRY":
-        res.status(409).json({ error: "Usuario ya registrado con alguno de estos datos." });
-        return;
-
-      case "ENOENT":
-        res.status(404).json({ error: "Recurso no encontrado" });
-        return;
-
-      case "ER_BAD_DB_ERROR":
-        res.status(500).json({ error: "Error interno del servidor - Base de datos no encontrada" });
-        return;
-
-      default:
-        res.status(500).json({ error: "Error interno del servidor" });
-        return;
+    if (errorCode === 11000) {
+      console.log("Error: Elemento ya registrado con alguno de estos datos.");
+      res.status(409).json({ error: "Elemento ya registrado con alguno de estos datos." });
+      return;
+    } else {
+      res.status(500).json({ error: "Error interno del servidor" });
+      return;
     }
   }
 
-  if (err.name === "EntityMetadataNotFoundError") {
-    res.status(500).json({ error: "Error de tiempo de espera al conectar a la base de datos" });
+  const errorName = err.name;
+  const errorMessage = err.message;
+
+  if (errorName === "JsonWebTokenError") {
+    console.log("Error: Token no valido.");
+    if (errorMessage === "invalid token") {
+      res.status(401).json({ error: "Token no valido." });
+      return;
+    }
+  }
+
+  if (errorName === "CastError") {
+    res.status(400).json({ error: err.message });
     return;
   }
 
+  if (errorName === "ValidationError") {
+    res.status(401).json({ error: err.message });
+    return;
+  }
+  console.error(err);
   res.status(err.statusCode || 500).json({ error: err.message || "Error interno del servidor" });
 };

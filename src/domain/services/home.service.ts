@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { type Request, type Response, type NextFunction } from "express";
 import * as fs from "fs";
 import path from "path";
