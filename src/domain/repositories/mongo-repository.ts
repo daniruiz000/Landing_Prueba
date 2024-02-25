@@ -7,7 +7,6 @@ const DB_CONNECTION: string | undefined = process.env.DB_URL;
 const DB_NAME: string | undefined = process.env.DB_NAME;
 
 const config = {
-  useNewUrlParser: true,
   useUnifiedTopology: true,
   serverSelectionTimeoutMS: 5000,
   dbName: DB_NAME,
